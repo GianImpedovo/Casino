@@ -60,5 +60,9 @@ public class MaquinaView {
 		String datos = "casillas: " + cantCasillas + " | coste: " + costeJugada;
 		return datos;
 	}
+	
+	public String obtenerNombre() {
+		return "  Nro: " + nroMaquina + " ";
+	}
 
 }

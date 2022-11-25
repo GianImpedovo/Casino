@@ -19,7 +19,7 @@ public class Test {
 		v.setVisible(true);
 		//VentanaMaquina vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(3));
 		//vm.setVisible(true);
-			
+		
 		// Dar de alta Premio
 		Casilla c1 = new Casilla("Banana");
 		Casilla c2 = new Casilla("Manzana");
