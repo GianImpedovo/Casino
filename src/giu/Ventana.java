@@ -29,7 +29,7 @@ public class Ventana extends JFrame{
 	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina;
 	private JTextField credito;
 	private JButton aceptar;
-	JComboBox<String>  opciones, nroMaquinas;
+	private JComboBox<String>  opciones, nroMaquinas;
 
 	
 	public Ventana() throws MaquinaExcepcion {
@@ -186,6 +186,7 @@ public class Ventana extends JFrame{
 				if ( opcionElegida == "Dar Baja Premio" ) {
 					// Crear la ventana para baja premio
 					JOptionPane.showMessageDialog(ventana, "Ventana baja premio");
+					
 				}
 					
 				

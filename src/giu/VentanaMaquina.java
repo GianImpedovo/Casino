@@ -98,7 +98,7 @@ public class VentanaMaquina extends JFrame {
 			//this.casilla = new JLabel(mv.getCasillas().get(i).obtenerFruta(),SwingConstants.CENTER);
 			//panelCasillas.add(casilla);
 			
-			String fruta = mv.getCasillas().get(i).obtenerFruta();
+			String fruta = mv.getCasillas().get(i).getFruta();
 			if (fruta == "Frutilla") {
 				ImageIcon frutilla = new ImageIcon(getClass().getResource("/img/frutilla.jpg"));
 				panelImagenes.add(new JLabel(frutilla));

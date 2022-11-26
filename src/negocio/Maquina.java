@@ -2,6 +2,7 @@ package negocio;
 
 import java.util.ArrayList;
 
+import vista.CasillaView;
 import vista.MaquinaView;
 
 public class Maquina {
@@ -23,6 +24,7 @@ public class Maquina {
 		this.saldoJugador = 0;
 		this.costeJugada = costeJugada;
 		this.nroMaquina = proximoNroMaquina;
+
 		aumentarNroMaquina();
 
 	}
@@ -161,7 +163,11 @@ public class Maquina {
 	
 	public MaquinaView toView() {
 		generarCasillas();
-		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillas, saldoJugador, costeJugada);
+		ArrayList<CasillaView> casillasVista = new ArrayList<CasillaView>();
+		for (Casilla c: casillas) {
+			casillasVista.add(c.toView());
+		}
+		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada);
 		return mv;
 	}
 }
