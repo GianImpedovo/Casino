@@ -162,19 +162,30 @@ public class Ventana extends JFrame{
 			if(e.getActionCommand() == "Aceptar") {
 				String maquinaElegida = (String) nroMaquinas.getSelectedItem();
 				String opcionElegida = (String)opciones.getSelectedItem();
-				//String creditoIngresado = (String)credito.getText();
+				String creditoIngresado = (String)credito.getText();
+
 				
-				if (opcionElegida == "Jugar") {
+				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
+					//JOptionPane.showMessageDialog(ventana, "Ventana jugar");
 					try {
 						vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)));
-					} catch (NumberFormatException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
 					} catch (MaquinaExcepcion e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					vm.setVisible(true);
+				} else if ( creditoIngresado.isEmpty() ) {
+					JOptionPane.showMessageDialog(ventana, " No ingresaste nada de credito. ");
+				}
+				
+				if ( opcionElegida == "Dar Alta Premio") {
+					// Crear la ventana de alta premio
+					JOptionPane.showMessageDialog(ventana, "Ventana alta premio");
+				}
+				
+				if ( opcionElegida == "Dar Baja Premio" ) {
+					// Crear la ventana para baja premio
+					JOptionPane.showMessageDialog(ventana, "Ventana baja premio");
 				}
 					
 				

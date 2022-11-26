@@ -1,6 +1,7 @@
 package giu;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,18 +20,18 @@ import negocio.Maquina;
 import vista.CasillaView;
 import vista.MaquinaView;
 
-public class VentanaMaquina extends JFrame{
+public class VentanaMaquina extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel titulo;
-	private JLabel casilla,frutilla;
+	private JLabel casilla;
 	private MaquinaView mv;
 	//JLabel credito;
 	
 	
 	public VentanaMaquina(MaquinaView mv) throws MaquinaExcepcion{
 		this.mv = mv;
-		iniciarComponentes();
+		
 		//Valores de la ventana maquina
 		this.setTitle("Casino");
 		ImageIcon imgMoneda = new ImageIcon(getClass().getResource("/img/coin-solid-24.png"));
@@ -39,11 +40,9 @@ public class VentanaMaquina extends JFrame{
 		this.setLocationRelativeTo(null);
 		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-	}
-		
 		
 	
-	private void iniciarComponentes() throws MaquinaExcepcion {
+	
 		
 		JPanel panel = new JPanel();
 		//JPanel panelCasillas = new JPanel();
@@ -56,13 +55,27 @@ public class VentanaMaquina extends JFrame{
 		
 	
 		Color marron = new Color (153, 77, 19);
+		Color oro = new Color (168, 139, 0);
 		botonJugar.setBackground(marron);
 		panel.setBackground(marron);
+		panelImagenes.setBackground(oro);
 		this.getContentPane().add(panel);
 		
+		//boton
 		JButton jugar = new JButton("Jugar");
-		ManejoBotonesInterna m = new ManejoBotonesInterna(this);
-		jugar.addActionListener(m);
+		jugar.setBackground(Color.GREEN);
+		
+		jugar.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+			
+		
+		
+		
 		
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
@@ -77,6 +90,8 @@ public class VentanaMaquina extends JFrame{
 		
 		
 		this.titulo = new JLabel("MAQUINA N° "+ mv.getNroMaquina(), SwingConstants.CENTER);
+		titulo.setFont(new Font("Serif",Font.BOLD,40));
+		
 		
 		for (int i=0; i< mv.getCantCasillas();i++) {
 		// VER EL PANEL DE LAS CASILLAS STRING, SON NECESARIAS?
@@ -85,27 +100,27 @@ public class VentanaMaquina extends JFrame{
 			
 			String fruta = mv.getCasillas().get(i).obtenerFruta();
 			if (fruta == "Frutilla") {
-				ImageIcon frutilla = new ImageIcon(getClass().getResource("/img/frutilla.png"));
+				ImageIcon frutilla = new ImageIcon(getClass().getResource("/img/frutilla.jpg"));
 				panelImagenes.add(new JLabel(frutilla));
 			}
 			if (fruta == "Banana") {
-				ImageIcon banana = new ImageIcon(getClass().getResource("/img/banana.png"));
+				ImageIcon banana = new ImageIcon(getClass().getResource("/img/banana.jpg"));
 				panelImagenes.add(new JLabel(banana));
 			}
 			if (fruta == "Manzana") {
-				ImageIcon manzana = new ImageIcon(getClass().getResource("/img/manzana.png"));
+				ImageIcon manzana = new ImageIcon(getClass().getResource("/img/manzana.jpg"));
 				panelImagenes.add(new JLabel(manzana));
 			}
 			if (fruta == "Sandia") {
-				ImageIcon sandia = new ImageIcon(getClass().getResource("/img/sandia.png"));
+				ImageIcon sandia = new ImageIcon(getClass().getResource("/img/sandia.jpg"));
 				panelImagenes.add(new JLabel(sandia));
 			}
 			if (fruta == "Uva") {
-				ImageIcon uva = new ImageIcon(getClass().getResource("/img/uva.png"));
+				ImageIcon uva = new ImageIcon(getClass().getResource("/img/uva.jpg"));
 				panelImagenes.add(new JLabel(uva));
 			}
 			if (fruta == "Guinda") {
-				ImageIcon guinda = new ImageIcon(getClass().getResource("/img/guinda.png"));
+				ImageIcon guinda = new ImageIcon(getClass().getResource("/img/guinda.jpg"));
 				panelImagenes.add(new JLabel(guinda));
 			}
 			
@@ -120,26 +135,9 @@ public class VentanaMaquina extends JFrame{
 	}
 	
 	
-	class ManejoBotonesInterna implements ActionListener{
-
-		private JFrame VentanaMaquina;
-			
-		public ManejoBotonesInterna(JFrame VentanaMaquina) {
-				this.VentanaMaquina = VentanaMaquina;
-			}
-			
-			@Override
-			public void actionPerformed(ActionEvent jugar) {
-				try {
-					Casino.getInstancia().jugar(1);
-				} catch (MaquinaExcepcion e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+	
 
 		
-		}
 }
 
 

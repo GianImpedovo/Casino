@@ -16,6 +16,7 @@ public class Test {
 	public static void main(String[] args) throws MaquinaExcepcion {
 		Ventana v = new Ventana();
 		v.setVisible(true);
+
 		
 		// Dar de alta Premio
 		Casilla c1 = new Casilla("Banana");
