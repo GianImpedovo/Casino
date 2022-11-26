@@ -14,11 +14,8 @@ import java.util.ArrayList;
 public class Test {
 
 	public static void main(String[] args) throws MaquinaExcepcion {
-		System.out.print(false);
 		Ventana v = new Ventana();
 		v.setVisible(true);
-		//VentanaMaquina vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(3));
-		//vm.setVisible(true);
 		
 		// Dar de alta Premio
 		Casilla c1 = new Casilla("Banana");

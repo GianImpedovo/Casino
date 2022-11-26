@@ -31,7 +31,7 @@ public class Casino {
 		//System.o ut.print(m2.obtenerNroMaquina());
 	}
 	
-	public static Casino getInstancia() {
+	public static Casino getInstancia(){
 		if( instancia == null ) 
 			instancia = new Casino();
 		return instancia;

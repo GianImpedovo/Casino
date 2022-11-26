@@ -37,7 +37,9 @@ public class VentanaMaquina extends JFrame{
 		this.setIconImage(imgMoneda.getImage());
 		this.setBounds(100,100,800,600);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);}
+		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+	}
 		
 		
 	
@@ -74,7 +76,7 @@ public class VentanaMaquina extends JFrame{
 		
 		
 		
-		this.titulo = new JLabel("MAQUINA N° "+ Casino.getInstancia().getMaquinaView(1).getNroMaquina(), SwingConstants.CENTER);
+		this.titulo = new JLabel("MAQUINA N° "+ mv.getNroMaquina(), SwingConstants.CENTER);
 		
 		for (int i=0; i< mv.getCantCasillas();i++) {
 		// VER EL PANEL DE LAS CASILLAS STRING, SON NECESARIAS?

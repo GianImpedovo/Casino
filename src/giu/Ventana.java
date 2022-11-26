@@ -1,27 +1,27 @@
 package giu;
 
-import java.awt.Color;
+
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
-import vista.MaquinaView;
+
 
 public class Ventana extends JFrame{
 	
@@ -29,7 +29,8 @@ public class Ventana extends JFrame{
 	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina;
 	private JTextField credito;
 	private JButton aceptar;
-	
+	JComboBox<String>  opciones, nroMaquinas;
+
 	
 	public Ventana() throws MaquinaExcepcion {
 
@@ -53,16 +54,16 @@ public class Ventana extends JFrame{
 		titulo = new JLabel("Casino", SwingConstants.CENTER);
 		titulo.setFont(new Font("Serif", Font.PLAIN, 40));
 		
-        Integer[] nros = {Casino.getInstancia().getMaquinaView(1).getNroMaquina(),
-				 Casino.getInstancia().getMaquinaView(2).getNroMaquina(),
-			     Casino.getInstancia().getMaquinaView(3).getNroMaquina()};
-        JComboBox<Integer> nroMaquinas = new JComboBox<>(nros);
+        String[] nros = {Casino.getInstancia().getMaquinaView(1).obtenerNombre(),
+				 Casino.getInstancia().getMaquinaView(2).obtenerNombre(),
+			     Casino.getInstancia().getMaquinaView(3).obtenerNombre()};
+        nroMaquinas = new JComboBox<>(nros);
         ((JLabel)nroMaquinas.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 		
 		
 		JPanel panel_Lbl = inicializaPanelDeLbl1();
-		JPanel panel_Opciones = inicializaPanelDeOpciones(nroMaquinas);
-		JPanel panel_Datos = inicializaPanelDeDatos(nroMaquinas);
+		JPanel panel_Opciones = inicializaPanelDeOpciones();
+		JPanel panel_Datos = inicializaPanelDeDatos();
 
         
 		
@@ -91,14 +92,14 @@ public class Ventana extends JFrame{
 		return panelLbl;
 	}
 	
-	public JPanel inicializaPanelDeOpciones(JComboBox<Integer> nroMaquinas) throws MaquinaExcepcion {
+	public JPanel inicializaPanelDeOpciones() throws MaquinaExcepcion {
 		JPanel panel_Opciones = new JPanel(new GridLayout(5,1, 70, 70));
 		
 		titulo = new JLabel("Casino", SwingConstants.CENTER);
 		titulo.setFont(new Font("Serif", Font.BOLD, 40));
         
         String[] listaOpciones = {"Jugar", "Dar Alta Premio", "Dar Baja Premio"};
-        JComboBox<String>  opciones = new JComboBox<>(listaOpciones);
+        opciones = new JComboBox<>(listaOpciones);
         ((JLabel)opciones.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         
         credito = new JTextField();
@@ -110,10 +111,13 @@ public class Ventana extends JFrame{
         panel_Opciones.add(credito);
         panel_Opciones.add(aceptar);
         
+        ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
+        aceptar.addActionListener(accionBtn);
+        
         return panel_Opciones;
 	}
 	
-	public JPanel inicializaPanelDeDatos(JComboBox<Integer> nroMaquinas) throws MaquinaExcepcion {
+	public JPanel inicializaPanelDeDatos() throws MaquinaExcepcion {
 		JPanel panel_Datos = new JPanel(new GridLayout(3,1));
         datosMaquina = new JLabel(Casino.getInstancia().getMaquinaView(1).toString(), SwingConstants.CENTER);
         datosMaquina.setFont(new Font("Serif", Font.BOLD, 20));
@@ -141,6 +145,44 @@ public class Ventana extends JFrame{
         panel_Datos.add(new JLabel());
         
         return panel_Datos;
+	}
+	
+	class ManejoBotonAceptar implements ActionListener {
+		
+		private JFrame ventana;
+		VentanaMaquina vm;
+		
+		public ManejoBotonAceptar(JFrame ventana) {
+			this.ventana = ventana;
+			
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getActionCommand() == "Aceptar") {
+				String maquinaElegida = (String) nroMaquinas.getSelectedItem();
+				String opcionElegida = (String)opciones.getSelectedItem();
+				//String creditoIngresado = (String)credito.getText();
+				
+				if (opcionElegida == "Jugar") {
+					try {
+						vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)));
+					} catch (NumberFormatException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (MaquinaExcepcion e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					vm.setVisible(true);
+				}
+					
+				
+				
+			}
+			
+		}
+		
 	}
 }
 

@@ -62,7 +62,7 @@ public class MaquinaView {
 	}
 	
 	public String obtenerNombre() {
-		return "  Nro: " + nroMaquina + " ";
+		return Integer.toString(nroMaquina);
 	}
 
 }
