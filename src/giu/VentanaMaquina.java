@@ -20,44 +20,68 @@ import vista.MaquinaView;
 public class VentanaMaquina extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JLabel titulo, creditoDisponible;
+	private JLabel titulo, creditoDisponible, msjPremio;
 	private MaquinaView mv;
 	private JButton jugar;
 	private JPanel panel, botonJugar, panelImagenes;
+	private int idMaquina;
+	private String creditoIngresado;
 	//JLabel credito;
 	
 	public VentanaMaquina(int idMaquina, String creditoIngresado) throws MaquinaExcepcion{
 		this.mv = Casino.getInstancia().getMaquinaView(idMaquina);
+		this.idMaquina = idMaquina;
+		this.creditoIngresado = creditoIngresado;
 		//Valores de la ventana maquina
 		this.setTitle("Casino");
 		ImageIcon imgMoneda = new ImageIcon(getClass().getResource("/img/coin-solid-24.png"));
 		this.setIconImage(imgMoneda.getImage());
 		this.setBounds(100,100,800,600);
 		this.setLocationRelativeTo(null);
-		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		configuracion();
+
+	}
+	
+	public void configuracion() {
+		
+		inicializarPanelDeBoton();
+		inicializarPanelImagenes();
 		
 		panel = new JPanel();
-		botonJugar = new JPanel();
-		panelImagenes = new JPanel();
 		panel.setLayout(new GridLayout(3,1));
+		Color marron = new Color (153, 77, 19);
+		panel.setBackground(marron);
 		
+		this.getContentPane().add(panel);
+
+		this.titulo = new JLabel("MAQUINA N° "+ mv.getNroMaquina(), SwingConstants.CENTER);
+		titulo.setFont(new Font("Serif",Font.BOLD,40));
+		
+		panel.add(titulo);
+		panel.add(panelImagenes);
+		panel.add(botonJugar);
+	}
+
+	public void inicializarPanelImagenes() {
+		panelImagenes = new JPanel();
 		panelImagenes.setLayout(new GridLayout(1,mv.getCantCasillas(),20,20));
+		Color oro = new Color (168, 139, 0);
+		panelImagenes.setBackground(oro);
+	}
+	
+	public void inicializarPanelDeBoton() {
+		
+		botonJugar = new JPanel();
 		botonJugar.setLayout(new GridLayout(3,3));
 		
-	
-		Color marron = new Color (153, 77, 19);
-		Color oro = new Color (168, 139, 0);
-		botonJugar.setBackground(marron);
-		panel.setBackground(marron);
-		panelImagenes.setBackground(oro);
-		this.getContentPane().add(panel);
 		
-		//boton
 		jugar = new JButton("Jugar");
 		jugar.setBackground(Color.GREEN);
 		
 		creditoDisponible = new JLabel("Credito : $" + creditoIngresado, SwingConstants.CENTER);
-		
+
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
@@ -68,23 +92,15 @@ public class VentanaMaquina extends JFrame {
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		
-		this.titulo = new JLabel("MAQUINA N° "+ mv.getNroMaquina(), SwingConstants.CENTER);
-		titulo.setFont(new Font("Serif",Font.BOLD,40));
-		
-		panel.add(titulo);
-		panel.add(panelImagenes);
-		panel.add(botonJugar);
-
 		jugar.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand() == "Jugar") {
 					try {
-						Casino.getInstancia().jugar(mv.getNroMaquina(), Casino.getInstancia().generarTicket(Float.parseFloat(creditoIngresado)));
-						mv = Casino.getInstancia().getMaquinaView(idMaquina);
-						String saldoJugador = Float.toString(mv.getSaldoJugador());
-						creditoDisponible.setText(saldoJugador);
-						añadirCasillas();
+						jugadas();
+					} catch (NumberFormatException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					} catch (MaquinaExcepcion e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -94,9 +110,21 @@ public class VentanaMaquina extends JFrame {
 			}
 			
 		});
-			
+	}
+	
+	public void jugadas() throws NumberFormatException, MaquinaExcepcion {
+		if ( Casino.getInstancia().getMaquinaView(idMaquina).getSaldoJugador() != 0 ) {
+			Casino.getInstancia().jugar(idMaquina);
+		} else {
+			Casino.getInstancia().jugar(idMaquina,
+					Casino.getInstancia().generarTicket(Float.parseFloat(creditoIngresado)));
+		}
 		
-
+		añadirCasillas();
+		mv = Casino.getInstancia().getMaquinaView(idMaquina);
+		String saldoJugador = Float.toString(mv.getSaldoJugador());
+		creditoDisponible.setText(saldoJugador);
+		
 	}
 	
 	public void añadirCasillas() {
@@ -137,7 +165,7 @@ public class VentanaMaquina extends JFrame {
 		
 	}
 	
-
+	
 		
 }
 

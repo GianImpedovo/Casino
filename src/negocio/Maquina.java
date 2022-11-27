@@ -62,7 +62,7 @@ public class Maquina {
 			}
 			}
 			if(!gano)
-				System.out.print("\nNo obtuviste ningun premio ");		
+				System.out.print("\nNo obtuviste ningun premio - saldo: " + saldoJugador);		
 
 			actualizarSaldo(monto, gano);
 			actualizarRecaudacion(monto, gano);
@@ -70,6 +70,7 @@ public class Maquina {
 		}
 		
 		casillas.clear();
+		System.out.print("\nSaldo Final " + saldoJugador);
 	}
 	
 	public void iniciarJuego(){
@@ -83,18 +84,19 @@ public class Maquina {
 			generarCasillas();
 			for ( Premio p: premios){
 				if (p.soyEsePremio(casillas)) {
-					System.out.print("\nObtuviste premio de : " + monto );
 					monto = p.obtenerMonto();	
+					System.out.print("\nObtuviste premio de : " + monto );
 					gano = true;
 				} 
 			}
 			if(!gano)
-				System.out.print("\nNo obtuviste ningun premio ");
+				System.out.print("\nNo obtuviste ningun premio - saldo: " + saldoJugador);
 			actualizarSaldo(monto, gano);
 			actualizarRecaudacion(monto, gano);
 		}
 		
 		casillas.clear();
+		System.out.print("\nSaldo Final " + saldoJugador);
 	}
 	
 	public void generarCasillas() {
@@ -116,7 +118,9 @@ public class Maquina {
 	
 	private void actualizarSaldo(float monto, boolean gano) {
 		if (gano)
+			System.out.print("\n Aumenta saldo : " + monto );
 			this.saldoJugador += monto;
+		System.out.print("\n menos saldo : " + costeJugada );
 		this.saldoJugador -= this.costeJugada;
 	
 	}

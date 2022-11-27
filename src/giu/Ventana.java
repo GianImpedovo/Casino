@@ -252,6 +252,10 @@ public class Ventana extends JFrame{
         c.add(panelAltaPremio);
 	}
 	
+	public void inicializarPanelBajaPremio() {
+		
+	}
+	
 	class ManejoBotonAceptar implements ActionListener {
 		
 		private JFrame ventana;
@@ -277,7 +281,7 @@ public class Ventana extends JFrame{
 					}
 					vm.setVisible(true);
 				} else if ( opcionElegida == "Jugar" && creditoIngresado.isEmpty() ) {
-					//JOptionPane.showMessageDialog(ventana, " No ingresaste nada de credito. ");
+					JOptionPane.showMessageDialog(ventana, " No ingresaste nada de credito. ");
 				}
 				
 				if ( opcionElegida == "Dar Alta Premio") {

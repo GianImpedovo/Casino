@@ -17,8 +17,8 @@ public class Test {
 		Ventana v = new Ventana();
 		v.setVisible(true);
 		
-		VentanaMaquina mv = new VentanaMaquina(Casino.getInstancia().getMaquinaView(1).getNroMaquina(), "1000");
-		mv.setVisible(true);
+		//VentanaMaquina mv = new VentanaMaquina(Casino.getInstancia().getMaquinaView(1).getNroMaquina(), "1000");
+		//mv.setVisible(true);
 
 		
 		// Dar de alta Premio
@@ -40,24 +40,12 @@ public class Test {
 		Casino.getInstancia().altaPremio(500, 1, combinacion2);
 			
 		// Dar de baja Premio
+		/*
 		ArrayList<Casilla> combinacion3 = new ArrayList<Casilla>();
 		combinacion3.add(c5);
 		combinacion3.add(c6);
 		Casino.getInstancia().bajaPremio(1, combinacion3);
-			
-		// Generamos ticket para jugar 
-		Ticket t = Casino.getInstancia().generarTicket(1000);
-			
-		//Jugar
-		System.out.print("\nComienza el juego");
-		Comprobante c = Casino.getInstancia().jugar(1, t);
-			
-		while (Casino.getInstancia().seguirJugando()) {
-			c = Casino.getInstancia().jugar(1);
-			}
-			
-		System.out.print("\nTermino el juego");
-		System.out.print("\nCobraste : " + Casino.getInstancia().cobrarDinero(c));
+		 */
 		
 
 		}
