@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Font;
 
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -170,7 +171,6 @@ public class Ventana extends JFrame{
 					try {
 						vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)));
 					} catch (MaquinaExcepcion e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					vm.setVisible(true);
@@ -188,9 +188,7 @@ public class Ventana extends JFrame{
 					JOptionPane.showMessageDialog(ventana, "Ventana baja premio");
 					
 				}
-					
-				
-				
+
 			}
 			
 		}
