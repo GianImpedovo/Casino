@@ -18,7 +18,7 @@ public class Test {
 		Ventana v = new Ventana();
 		v.setVisible(true);
 		
-		VentanaAltaPremio vP = new VentanaAltaPremio(Casino.getInstancia().getMaquinaView(3));
+		VentanaAltaPremio vP = new VentanaAltaPremio(Casino.getInstancia().getMaquinaView(1));
 		vP.setVisible(true);
 
 		

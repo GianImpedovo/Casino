@@ -174,7 +174,7 @@ public class Ventana extends JFrame{
 						e1.printStackTrace();
 					}
 					vm.setVisible(true);
-				} else if ( creditoIngresado.isEmpty() ) {
+				} else if ( opcionElegida == "Jugar" && creditoIngresado.isEmpty() ) {
 					JOptionPane.showMessageDialog(ventana, " No ingresaste nada de credito. ");
 				}
 				
