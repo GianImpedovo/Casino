@@ -65,14 +65,6 @@ public class VentanaMaquina extends JFrame {
 		JButton jugar = new JButton("Jugar");
 		jugar.setBackground(Color.GREEN);
 		
-		jugar.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-			
-		});
-			
 		
 		
 		
@@ -130,6 +122,23 @@ public class VentanaMaquina extends JFrame {
 		panel.add(titulo);
 		panel.add(panelImagenes);
 		panel.add(botonJugar);
+		
+
+		jugar.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand() == "Jugar") {
+					try {
+						Casino.getInstancia().jugar(mv.getNroMaquina(),Casino.getInstancia().generarTicket(300));
+					} catch (MaquinaExcepcion e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}	
+			}
+			
+		});
+			
 		
 
 	}

@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Font;
 
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -190,6 +191,9 @@ public class Ventana extends JFrame{
 				}
 					
 				
+					
+				
+
 				
 			}
 			
