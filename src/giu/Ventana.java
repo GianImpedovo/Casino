@@ -8,7 +8,7 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,11 +28,13 @@ public class Ventana extends JFrame{
 	
 	private static final long serialVersionUID = -6710917183940403534L;
 	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina;
-	private JTextField credito;
-	private JButton aceptar;
-	private JComboBox<String>  opciones, nroMaquinas;
+	private JTextField credito, montoPremio;
+	private JButton aceptar, agregarPremio;
+	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
 	private JPanel panelPrincipal, panelCabecera, panelAltaPremio;
 	private Container c;
+	private ArrayList<JComboBox<String>> listaDeOpciones;
+
 
 	
 	public Ventana() throws MaquinaExcepcion {
@@ -41,7 +43,7 @@ public class Ventana extends JFrame{
 		this.setTitle("Casino");
 		ImageIcon imgMoneda = new ImageIcon(getClass().getResource("/img/coin-solid-24.png"));
 		this.setIconImage(imgMoneda.getImage());
-		this.setBounds(100,100,1000,800);
+		this.setBounds(100,100,1000,700);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -53,9 +55,11 @@ public class Ventana extends JFrame{
 		c = this.getContentPane();
 		c.setLayout(null);
 
+		listaDeOpciones = new ArrayList<JComboBox<String>>();
 		inicializarPanelCabecera();
 		inicializarPanelPrincipal();
 		inicializarPanelAltaPremio();
+		panelAltaPremio.setVisible(false);
 
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
@@ -143,7 +147,7 @@ public class Ventana extends JFrame{
         credito.setBounds(0,170,300,50);
         
         aceptar = new JButton("Aceptar");
-        aceptar.setBounds(0,350,300,50);
+        aceptar.setBounds(0,300,300,50);
         
         panel_Opciones.add(nroMaquinas);
         panel_Opciones.add(opciones);
@@ -195,26 +199,66 @@ public class Ventana extends JFrame{
         return panel_Datos;
 	}
 	
-	public void inicializarPanelAltaPremio() {
+	public void inicializarPanelAltaPremio() throws NumberFormatException, MaquinaExcepcion {
+		
+		if (panelAltaPremio != null ) {
+			c.remove(panelAltaPremio);
+			listaDeOpciones.removeAll(listaDeOpciones);
+		}
+			
+		
 		panelAltaPremio = new JPanel();
 		panelAltaPremio.setLayout(null);
 		panelAltaPremio.setBounds(0,250,1000,800);
 		
-		JLabel texto = new JLabel("Nuevo label");
-		texto.setBounds(100,100,100,100);
-		panelAltaPremio.add(texto);
+		panelAltaPremio.removeAll();
 		
-		
+        String[] opcionesFrutas = {"Banana", "Manzana", "Frutilla", "Sandia", "Uva", "Guinda"};
+        nombresFrutas = new JComboBox<String>(opcionesFrutas);
+        ((JLabel)nombresFrutas.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        nombresFrutas.setBounds(300,0,200,40);
+        
+        String maquinaElegida = (String) nroMaquinas.getSelectedItem();
+        
+        int cantCasillas = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCantCasillas();
+        
+        int y = 30;
+        for ( int i = 0; i < cantCasillas; i++ ) {
+        	nombresFrutas = new JComboBox<String>(opcionesFrutas);
+        	nombresFrutas.setBounds(300,y,200,40);
+        	panelAltaPremio.add(nombresFrutas);
+        	listaDeOpciones.add(nombresFrutas);
+        	y += 60;
+        }
+        
+        JLabel tituloAltaPremio = new JLabel("Ingresar Frutas: ");
+        tituloAltaPremio.setBounds(70,0,200,100);
+        tituloAltaPremio.setFont(new Font("Serif", Font.BOLD, 20));
+        panelAltaPremio.add(tituloAltaPremio);
+        
+        agregarPremio = new JButton("Agregar Premio");
+        agregarPremio.setBounds(300,300,200,50);
+        panelAltaPremio.add(agregarPremio);
+        
+        JLabel txtCredito = new JLabel("Monto Premio: ");
+        txtCredito.setBounds(550,35,130,30);
+        txtCredito.setFont(new Font("Serif", Font.BOLD, 16));
+        panelAltaPremio.add(txtCredito);
+        
+        montoPremio = new JTextField();
+        montoPremio.setBounds(680,35,200,30);
+        panelAltaPremio.add(montoPremio);
+        
+        c.add(panelAltaPremio);
 	}
 	
 	class ManejoBotonAceptar implements ActionListener {
 		
 		private JFrame ventana;
-		VentanaMaquina vm;
+		private VentanaMaquina vm;
 		
 		public ManejoBotonAceptar(JFrame ventana) {
 			this.ventana = ventana;
-			
 		}
 
 		@Override
@@ -224,7 +268,6 @@ public class Ventana extends JFrame{
 				String opcionElegida = (String)opciones.getSelectedItem();
 				String creditoIngresado = (String)credito.getText();
 
-				
 				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
 					//JOptionPane.showMessageDialog(ventana, "Ventana jugar");
 					try {
@@ -240,7 +283,17 @@ public class Ventana extends JFrame{
 				if ( opcionElegida == "Dar Alta Premio") {
 					// Crear la ventana de alta premio
 					panelPrincipal.setVisible(false);
-					panelAltaPremio.setVisible(true);
+					try {
+						inicializarPanelAltaPremio();
+						panelAltaPremio.setVisible(true);
+					} catch (NumberFormatException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (MaquinaExcepcion e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 
 				}
 				

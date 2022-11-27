@@ -16,6 +16,9 @@ public class Test {
 	public static void main(String[] args) throws MaquinaExcepcion {
 		Ventana v = new Ventana();
 		v.setVisible(true);
+		
+		VentanaMaquina mv = new VentanaMaquina(Casino.getInstancia().getMaquinaView(0));
+		mv.setVisible(true);
 
 		
 		// Dar de alta Premio
@@ -60,3 +63,4 @@ public class Test {
 		}
 
 	}
+
