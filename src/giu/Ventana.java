@@ -271,7 +271,7 @@ public class Ventana extends JFrame{
 				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
 					//JOptionPane.showMessageDialog(ventana, "Ventana jugar");
 					try {
-						vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)));
+						vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getNroMaquina(), creditoIngresado);
 					} catch (MaquinaExcepcion e1) {
 						e1.printStackTrace();
 					}

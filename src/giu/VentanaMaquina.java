@@ -1,7 +1,6 @@
 package giu;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,36 +15,32 @@ import javax.swing.SwingConstants;
 
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
-import negocio.Casilla;
-import negocio.Maquina;
-import vista.CasillaView;
 import vista.MaquinaView;
 
 public class VentanaMaquina extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JLabel titulo;
-	private JLabel casilla;
+	private JLabel titulo, creditoDisponible;
 	private MaquinaView mv;
 	private JButton jugar;
 	private JPanel panel, botonJugar, panelImagenes;
 	//JLabel credito;
 	
-	public VentanaMaquina(MaquinaView mv) throws MaquinaExcepcion{
-		this.mv = mv;
-		
+	public VentanaMaquina(int idMaquina, String creditoIngresado) throws MaquinaExcepcion{
+		this.mv = Casino.getInstancia().getMaquinaView(idMaquina);
 		//Valores de la ventana maquina
 		this.setTitle("Casino");
 		ImageIcon imgMoneda = new ImageIcon(getClass().getResource("/img/coin-solid-24.png"));
 		this.setIconImage(imgMoneda.getImage());
 		this.setBounds(100,100,800,600);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		panel = new JPanel();
 		botonJugar = new JPanel();
 		panelImagenes = new JPanel();
 		panel.setLayout(new GridLayout(3,1));
+		
 		panelImagenes.setLayout(new GridLayout(1,mv.getCantCasillas(),20,20));
 		botonJugar.setLayout(new GridLayout(3,3));
 		
@@ -61,12 +56,14 @@ public class VentanaMaquina extends JFrame {
 		jugar = new JButton("Jugar");
 		jugar.setBackground(Color.GREEN);
 		
+		creditoDisponible = new JLabel("Credito : $" + creditoIngresado, SwingConstants.CENTER);
+		
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(jugar);
-		botonJugar.add(new JLabel());
+		botonJugar.add(creditoDisponible);
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
@@ -83,14 +80,17 @@ public class VentanaMaquina extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getActionCommand() == "Jugar") {
 					try {
-						Casino.getInstancia().jugar(mv.getNroMaquina(),Casino.getInstancia().generarTicket(300));
+						Casino.getInstancia().jugar(mv.getNroMaquina(), Casino.getInstancia().generarTicket(Float.parseFloat(creditoIngresado)));
+						mv = Casino.getInstancia().getMaquinaView(idMaquina);
+						String saldoJugador = Float.toString(mv.getSaldoJugador());
+						creditoDisponible.setText(saldoJugador);
 						añadirCasillas();
 					} catch (MaquinaExcepcion e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
-				}	
+				}
 			}
 			
 		});
@@ -131,8 +131,8 @@ public class VentanaMaquina extends JFrame {
 
 				
 			}
+		
 		panelImagenes.updateUI();
-			
 		
 		
 	}

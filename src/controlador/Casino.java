@@ -5,6 +5,7 @@ import negocio.Comprobante;
 import negocio.Maquina;
 import negocio.Ticket;
 import vista.MaquinaView;
+import vista.TicketView;
 
 import java.io.IOException;
 import java.util.*;
@@ -110,6 +111,11 @@ public class Casino {
 	public MaquinaView getMaquinaView(int nroMaquina) throws MaquinaExcepcion{
 		Maquina m = buscarMaquina(nroMaquina);
 		return m.toView();
+	}
+	
+	public TicketView generarTicketView(Float monto) {
+		Ticket t = new Ticket(monto);
+		return t.toView();
 	}
 
 }

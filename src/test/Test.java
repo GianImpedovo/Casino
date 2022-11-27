@@ -17,7 +17,7 @@ public class Test {
 		Ventana v = new Ventana();
 		v.setVisible(true);
 		
-		VentanaMaquina mv = new VentanaMaquina(Casino.getInstancia().getMaquinaView(0));
+		VentanaMaquina mv = new VentanaMaquina(Casino.getInstancia().getMaquinaView(1).getNroMaquina(), "1000");
 		mv.setVisible(true);
 
 		

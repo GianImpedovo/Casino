@@ -107,11 +107,11 @@ public class Maquina {
 			casillas.add(c);
 		}
 		
-		System.out.print("\n Las casillas de la maquina son : ");
-		for (Casilla c: casillas) {
-			System.out.println("\n " + c.obtenerFruta());
-			
-		}
+		//System.out.print("\n Las casillas de la maquina son : ");
+		//for (Casilla c: casillas) {
+		//	System.out.println("\n " + c.obtenerFruta());
+		//	
+		//}
 	}
 	
 	private void actualizarSaldo(float monto, boolean gano) {
