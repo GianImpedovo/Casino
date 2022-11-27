@@ -3,7 +3,6 @@ package test;
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
 import giu.Ventana;
-import giu.VentanaAltaPremio;
 import giu.VentanaMaquina;
 import negocio.Casilla;
 import negocio.Comprobante;
@@ -17,9 +16,6 @@ public class Test {
 	public static void main(String[] args) throws MaquinaExcepcion {
 		Ventana v = new Ventana();
 		v.setVisible(true);
-		
-		VentanaAltaPremio vP = new VentanaAltaPremio(Casino.getInstancia().getMaquinaView(1));
-		vP.setVisible(true);
 
 		
 		// Dar de alta Premio
