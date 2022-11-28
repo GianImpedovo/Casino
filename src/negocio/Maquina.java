@@ -15,6 +15,7 @@ public class Maquina {
 	private ArrayList<Casilla> casillas;
 	private float saldoJugador;
 	private float costeJugada;
+	private boolean gano;
 	
 	public Maquina(float recaudacion, int cantCasillas, float costeJugada){
 		this.recaudacion = recaudacion;
@@ -24,6 +25,7 @@ public class Maquina {
 		this.saldoJugador = 0;
 		this.costeJugada = costeJugada;
 		this.nroMaquina = proximoNroMaquina;
+		this.gano = false;
 
 		aumentarNroMaquina();
 
@@ -46,8 +48,8 @@ public class Maquina {
 	
 	public void iniciarJuego(float saldoJ){
 		saldoJugador = saldoJ;
+		gano = false;
 		float monto = 0;
-		boolean gano = false;
 		
 		if ( !alcanzaRecaudacion() ) 
 			System.out.print("\nEs posible que no se pueda pagar el proximo premio");
@@ -64,8 +66,8 @@ public class Maquina {
 			if(!gano)
 				System.out.print("\nNo obtuviste ningun premio - saldo: " + saldoJugador);		
 
-			actualizarSaldo(monto, gano);
-			actualizarRecaudacion(monto, gano);
+			actualizarSaldo(monto);
+			actualizarRecaudacion(monto);
 			
 		}
 		
@@ -75,8 +77,7 @@ public class Maquina {
 	
 	public void iniciarJuego(){
 		float monto = 0;
-		boolean gano = false;
-		
+		gano = false;
 		if ( !alcanzaRecaudacion() ) 
 			System.out.print("\nEs posible que no se pueda pagar el proximo premio");
 		
@@ -91,8 +92,8 @@ public class Maquina {
 			}
 			if(!gano)
 				System.out.print("\nNo obtuviste ningun premio - saldo: " + saldoJugador);
-			actualizarSaldo(monto, gano);
-			actualizarRecaudacion(monto, gano);
+			actualizarSaldo(monto);
+			actualizarRecaudacion(monto);
 		}
 		
 		casillas.clear();
@@ -116,7 +117,7 @@ public class Maquina {
 		//}
 	}
 	
-	private void actualizarSaldo(float monto, boolean gano) {
+	private void actualizarSaldo(float monto) {
 		if (gano)
 			System.out.print("\n Aumenta saldo : " + monto );
 			this.saldoJugador += monto;
@@ -125,7 +126,7 @@ public class Maquina {
 	
 	}
 	
-	private void actualizarRecaudacion(float monto, boolean gano) {
+	private void actualizarRecaudacion(float monto) {
 		if (gano)
 			this.recaudacion -= monto;
 		this.recaudacion += this.costeJugada;
@@ -171,7 +172,7 @@ public class Maquina {
 		for (Casilla c: casillas) {
 			casillasVista.add(c.toView());
 		}
-		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada);
+		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada, gano);
 		return mv;
 	}
 }
