@@ -349,7 +349,12 @@ public class Ventana extends JFrame{
 					e1.printStackTrace();
 				}
 			}
-			
+			if (e.getActionCommand() == "Atras") {
+				panelPrincipal.setVisible(true);
+				panelAltaPremio.setVisible(false);
+				panelBajaPremio.setVisible(false);
+				
+			}
 		}
 
 		public void eleccionPanelPrincipal(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws MaquinaExcepcion {
