@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -81,11 +82,12 @@ public class VentanaMaquina extends JFrame {
 		jugar.setBackground(Color.GREEN);
 		
 		creditoDisponible = new JLabel("Credito : $" + creditoIngresado, SwingConstants.CENTER);
+		msjPremio = new JLabel("Mensaje de premio", SwingConstants.CENTER);
 
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
-		botonJugar.add(new JLabel());
+		botonJugar.add(msjPremio);
 		botonJugar.add(jugar);
 		botonJugar.add(creditoDisponible);
 		botonJugar.add(new JLabel());
@@ -125,6 +127,17 @@ public class VentanaMaquina extends JFrame {
 		String saldoJugador = Float.toString(mv.getSaldoJugador());
 		creditoDisponible.setText(saldoJugador);
 		
+		obtenerResultadoMaquina();
+		
+	}
+	
+	public void obtenerResultadoMaquina() throws MaquinaExcepcion {
+		boolean gano = Casino.getInstancia().getMaquinaView(idMaquina).obtenerGano();
+		if ( gano )
+			msjPremio.setText("GANASTE");
+		else {
+			msjPremio.setText("PERDISTE");
+		}
 	}
 	
 	public void añadirCasillas() {
