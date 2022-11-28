@@ -172,6 +172,7 @@ public class Maquina {
 		for (Casilla c: casillas) {
 			casillasVista.add(c.toView());
 		}
+		//System.out.println(premios.get(0).toView().obtenerMonto());
 		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada, gano);
 		return mv;
 	}

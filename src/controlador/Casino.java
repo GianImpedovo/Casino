@@ -4,6 +4,7 @@ import negocio.Casilla;
 import negocio.Comprobante;
 import negocio.Maquina;
 import negocio.Ticket;
+import vista.CasillaView;
 import vista.MaquinaView;
 import vista.TicketView;
 
@@ -72,9 +73,13 @@ public class Casino {
 		throw new MaquinaExcepcion("No se encontro la maquina solicitada");
 	}
 	
-	public void altaPremio(float monto, int nroM, ArrayList<Casilla> combinacion) throws MaquinaExcepcion{
+	public void altaPremio(float monto, int nroM, ArrayList<String> combinacion) throws MaquinaExcepcion{
+		ArrayList<Casilla> nuevaCombinacionCasilla = new ArrayList<Casilla>();
+		for(String fruta: combinacion) {
+			nuevaCombinacionCasilla.add(new Casilla(fruta));
+		}
 		Maquina m = buscarMaquina(nroM);
-		m.darAltaPremio(monto, combinacion);
+		m.darAltaPremio(monto, nuevaCombinacionCasilla);
 			
 	}
 	

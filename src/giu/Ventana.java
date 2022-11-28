@@ -37,19 +37,22 @@ public class Ventana extends JFrame{
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones;
 	private JCheckBox premiosBaja;
+	private ArrayList<String> combinacionCasillas;
 
 
 	
 	public Ventana() throws MaquinaExcepcion {
 
 		// Valores de la ventana principal
+		
 		this.setTitle("Casino");
 		ImageIcon imgMoneda = new ImageIcon(getClass().getResource("/img/coin-solid-24.png"));
 		this.setIconImage(imgMoneda.getImage());
 		this.setBounds(100,100,1000,700);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+		
+		this.combinacionCasillas = new ArrayList<String>();
 		configuracion();
 		
 	} 
@@ -63,14 +66,14 @@ public class Ventana extends JFrame{
 		inicializarPanelPrincipal();
 		inicializarPanelAltaPremio();
 		inicializarPanelBajaPremio();
-		panelPrincipal.setVisible(false);
+		panelPrincipal.setVisible(true);
 		panelAltaPremio.setVisible(false);
-		panelBajaPremio.setVisible(true);
+		panelBajaPremio.setVisible(false);
 		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
-		c.add(panelAltaPremio);
 		c.add(panelBajaPremio);
+		c.add(panelAltaPremio);
 		
 	}
 	
@@ -238,19 +241,21 @@ public class Ventana extends JFrame{
         	y += 60;
         }
         
-        JLabel tituloAltaPremio = new JLabel("Ingresar Frutas: ");
+        JLabel tituloAltaPremio = new JLabel("Ingresar Fruta: ");
         tituloAltaPremio.setBounds(70,0,200,100);
         tituloAltaPremio.setFont(new Font("Serif", Font.BOLD, 20));
         panelAltaPremio.add(tituloAltaPremio);
         
         agregarPremio = new JButton("Agregar Premio");
         agregarPremio.setBounds(300,300,200,50);
+        ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
+        agregarPremio.addActionListener(accionBtn);
         panelAltaPremio.add(agregarPremio);
         
-        JLabel txtCredito = new JLabel("Monto Premio: ");
-        txtCredito.setBounds(550,35,130,30);
-        txtCredito.setFont(new Font("Serif", Font.BOLD, 16));
-        panelAltaPremio.add(txtCredito);
+        JLabel txtCreditoTexto = new JLabel("Monto Premio: ");
+        txtCreditoTexto.setBounds(550,35,130,30);
+        txtCreditoTexto.setFont(new Font("Serif", Font.BOLD, 16));
+        panelAltaPremio.add(txtCreditoTexto);
         
         montoPremio = new JTextField();
         montoPremio.setBounds(680,35,200,30);
@@ -259,24 +264,36 @@ public class Ventana extends JFrame{
         c.add(panelAltaPremio);
 	}
 	
+	public void crearCombinacionCasillaView() {
+		if(combinacionCasillas != null )
+			combinacionCasillas.clear();
+		
+		
+		
+		for (JComboBox<String> box: listaDeOpciones) {
+			combinacionCasillas.add((String) box.getSelectedItem());
+		}
+	}
 	
 	public void inicializarPanelBajaPremio() throws MaquinaExcepcion {
 			
 		int cantPremios = Casino.getInstancia().getMaquinaView(1).getPremios().size();
-		System.out.print(cantPremios);
+		//System.out.print(cantPremios);
 		
 		panelBajaPremio = new JPanel();
 		panelBajaPremio.setLayout(null);
-		panelAltaPremio.setBounds(0,250,1000,800);
-		
+		panelBajaPremio.setBounds(0,250,1000,800);
+     
 		JLabel tituloBajaPremio = new JLabel("Premio a Eliminar: ");
         tituloBajaPremio.setBounds(0,0,200,100);
         tituloBajaPremio.setFont(new Font("Serif", Font.BOLD, 20));
         panelBajaPremio.add(tituloBajaPremio);
-
-     
+		
         
 		int y = 30;
+		
+		// No se imprime como se quiere, fijarse como se manejan los tipos de datos
+		// Hace referencia al epacio en memoria.
 		for (int i=0;i<cantPremios;i++) {
 			String  infoPremio = Casino.getInstancia().getMaquinaView(1).getPremios().get(i).toView().toString();
 			premiosBaja = new JCheckBox(infoPremio);
@@ -285,6 +302,7 @@ public class Ventana extends JFrame{
 			y += 60;	
 		
 		}	
+		
 	}
 	
 	class ManejoBotonAceptar implements ActionListener {
@@ -298,11 +316,22 @@ public class Ventana extends JFrame{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand() == "Aceptar") {
-				String maquinaElegida = (String) nroMaquinas.getSelectedItem();
-				String opcionElegida = (String)opciones.getSelectedItem();
-				String creditoIngresado = (String)credito.getText();
+			String maquinaElegida = (String) nroMaquinas.getSelectedItem();
+			String opcionElegida = (String)opciones.getSelectedItem();
+			String creditoIngresado = (String)credito.getText();
 
+			if(e.getActionCommand() == "Aceptar") {
+				eleccionPanelPrincipal( e, maquinaElegida, opcionElegida, creditoIngresado);			
+			}
+			if(e.getActionCommand() == "Agregar Premio" && !montoPremio.getText().isEmpty()) {
+				agregarNuevoPremio(e, maquinaElegida, opcionElegida, creditoIngresado);
+			}
+			
+			
+		}
+
+		public void eleccionPanelPrincipal(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) {
+			
 				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
 					//JOptionPane.showMessageDialog(ventana, "Ventana jugar");
 					try {
@@ -314,7 +343,6 @@ public class Ventana extends JFrame{
 				} else if ( opcionElegida == "Jugar" && creditoIngresado.isEmpty() ) {
 					JOptionPane.showMessageDialog(ventana, " No ingresaste nada de credito. ");
 				}
-				
 				if ( opcionElegida == "Dar Alta Premio") {
 					// Crear la ventana de alta premio
 					panelPrincipal.setVisible(false);
@@ -329,9 +357,8 @@ public class Ventana extends JFrame{
 						e1.printStackTrace();
 					}
 					
-
+	
 				}
-				
 				if ( opcionElegida == "Dar Baja Premio" ) {
 					// Crear la ventana para baja premio
 					panelPrincipal.setVisible(false);
@@ -343,14 +370,23 @@ public class Ventana extends JFrame{
 						e1.printStackTrace();
 					}
 					
-					
-					
 				}
 
-			}
-			
+		
 		}
 		
+		public void agregarNuevoPremio(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) {
+			float monto = Float.parseFloat(montoPremio.getText());
+			crearCombinacionCasillaView();
+			try {
+				Casino.getInstancia().altaPremio(monto, Integer.parseInt(maquinaElegida), combinacionCasillas);
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			} catch (MaquinaExcepcion e1) {
+				e1.printStackTrace();
+			}
+			montoPremio.setText("");
+		}
 	}
 }
 

@@ -13,6 +13,11 @@ public class Premio {
 	public Premio(float monto, ArrayList<Casilla> combinacion) {
 		this.monto = monto;
 		this.combinacion = combinacion;
+		System.out.println("\n Alta premio \n");
+		//System.out.println("Se dio de alta el premio monto : " + this.monto);
+		for ( Casilla c: this.combinacion) {
+			System.out.println("fruta: " + c.obtenerFruta());
+		}
 	}
 	
 	public void mostrarCombinacion() {

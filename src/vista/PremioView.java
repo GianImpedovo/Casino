@@ -23,6 +23,8 @@ public class PremioView {
 		
 	}
 	public String toString() {
+		// Ojo aca porque fijate que estas imprimiento una lista como si fuese string 
+		// ojo como manejas los tipos de datos
 		String infoPremio = "Casillas :" + combinacionVista + "/" + monto;
 		return infoPremio;
 	}
