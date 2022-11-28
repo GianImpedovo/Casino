@@ -66,9 +66,9 @@ public class Ventana extends JFrame{
 		inicializarPanelPrincipal();
 		inicializarPanelAltaPremio();
 		inicializarPanelBajaPremio();
-		panelPrincipal.setVisible(true);
+		panelPrincipal.setVisible(false);
 		panelAltaPremio.setVisible(false);
-		panelBajaPremio.setVisible(false);
+		panelBajaPremio.setVisible(true);
 		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
@@ -285,7 +285,7 @@ public class Ventana extends JFrame{
 		panelBajaPremio.setBounds(0,250,1000,800);
      
 		JLabel tituloBajaPremio = new JLabel("Premio a Eliminar: ");
-        tituloBajaPremio.setBounds(0,0,200,100);
+        tituloBajaPremio.setBounds(70,0,200,100);
         tituloBajaPremio.setFont(new Font("Serif", Font.BOLD, 20));
         panelBajaPremio.add(tituloBajaPremio);
 		
