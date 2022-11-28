@@ -2,6 +2,9 @@ package negocio;
 
 import java.util.ArrayList;
 
+import vista.CasillaView;
+import vista.PremioView;
+
 public class Premio {
 	
 	private float monto;
@@ -47,5 +50,14 @@ public class Premio {
 		return encontrado;
 	}
 	
-
+	public PremioView toView() {
+		ArrayList<CasillaView> combinacionVista = new ArrayList<CasillaView>();
+		for(Casilla c: combinacion) {
+			combinacionVista.add(c.toView());
+		}
+		
+		PremioView pv = new PremioView(monto, combinacionVista);
+		return pv;
+		
+	}
 }

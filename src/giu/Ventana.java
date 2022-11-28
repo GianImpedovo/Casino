@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ import javax.swing.SwingConstants;
 
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
+import negocio.Premio;
 
 
 public class Ventana extends JFrame{
@@ -31,9 +33,10 @@ public class Ventana extends JFrame{
 	private JTextField credito, montoPremio;
 	private JButton aceptar, agregarPremio;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
-	private JPanel panelPrincipal, panelCabecera, panelAltaPremio;
+	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio;
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones;
+	private JCheckBox premiosBaja;
 
 
 	
@@ -59,11 +62,15 @@ public class Ventana extends JFrame{
 		inicializarPanelCabecera();
 		inicializarPanelPrincipal();
 		inicializarPanelAltaPremio();
+		inicializarPanelBajaPremio();
+		panelPrincipal.setVisible(false);
 		panelAltaPremio.setVisible(false);
-
+		panelBajaPremio.setVisible(true);
+		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
 		c.add(panelAltaPremio);
+		c.add(panelBajaPremio);
 		
 	}
 	
@@ -252,8 +259,32 @@ public class Ventana extends JFrame{
         c.add(panelAltaPremio);
 	}
 	
-	public void inicializarPanelBajaPremio() {
+	
+	public void inicializarPanelBajaPremio() throws MaquinaExcepcion {
+			
+		int cantPremios = Casino.getInstancia().getMaquinaView(1).getPremios().size();
+		System.out.print(cantPremios);
 		
+		panelBajaPremio = new JPanel();
+		panelBajaPremio.setLayout(null);
+		panelAltaPremio.setBounds(0,250,1000,800);
+		
+		JLabel tituloBajaPremio = new JLabel("Premio a Eliminar: ");
+        tituloBajaPremio.setBounds(0,0,200,100);
+        tituloBajaPremio.setFont(new Font("Serif", Font.BOLD, 20));
+        panelBajaPremio.add(tituloBajaPremio);
+
+     
+        
+		int y = 30;
+		for (int i=0;i<cantPremios;i++) {
+			String  infoPremio = Casino.getInstancia().getMaquinaView(1).getPremios().get(i).toView().toString();
+			premiosBaja = new JCheckBox(infoPremio);
+			premiosBaja.setBounds(300,y,200,40);
+			panelBajaPremio.add(premiosBaja);
+			y += 60;	
+		
+		}	
 	}
 	
 	class ManejoBotonAceptar implements ActionListener {
@@ -303,7 +334,16 @@ public class Ventana extends JFrame{
 				
 				if ( opcionElegida == "Dar Baja Premio" ) {
 					// Crear la ventana para baja premio
-					JOptionPane.showMessageDialog(ventana, "Ventana baja premio");
+					panelPrincipal.setVisible(false);
+					try {
+						inicializarPanelBajaPremio();
+						panelBajaPremio.setVisible(true);
+					} catch (MaquinaExcepcion e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
 					
 				}
 
