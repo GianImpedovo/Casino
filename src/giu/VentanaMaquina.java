@@ -134,9 +134,9 @@ public class VentanaMaquina extends JFrame {
 	public void obtenerResultadoMaquina() throws MaquinaExcepcion {
 		boolean gano = Casino.getInstancia().getMaquinaView(idMaquina).obtenerGano();
 		if ( gano )
-			msjPremio.setText("GANASTE");
+			msjPremio.setText("Ultima Jugada: GANASTE");
 		else {
-			msjPremio.setText("PERDISTE");
+			msjPremio.setText("Ultima Jugada: PERDISTE");
 		}
 	}
 	
