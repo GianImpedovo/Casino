@@ -31,7 +31,7 @@ public class Ventana extends JFrame{
 	private static final long serialVersionUID = -6710917183940403534L;
 	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina;
 	private JTextField credito, montoPremio;
-	private JButton aceptar, agregarPremio;
+	private JButton aceptar, agregarPremio, atras;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
 	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio;
 	private Container c;
@@ -72,23 +72,30 @@ public class Ventana extends JFrame{
 		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
-		c.add(panelBajaPremio);
 		c.add(panelAltaPremio);
+		c.add(panelBajaPremio);
 		
 	}
 	
 	public void inicializarPanelCabecera() {
 		
 		panelCabecera = new JPanel();
-		panelCabecera.setLayout(new GridLayout(1,2));
+		panelCabecera.setLayout(null);
 		panelCabecera.setBounds(10,10,1000,200);
 		
 		// Valores de cada Label
 		titulo = new JLabel("Casino", SwingConstants.CENTER);
+		titulo.setBounds(300,50,300,50);
 		titulo.setFont(new Font("Serif", Font.PLAIN, 40));
 		
+		atras = new JButton("Atras");
+		atras.setBounds(0,0,200,50);
+        ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
+        atras.addActionListener(accionBtn);
+        panelCabecera.add(atras);
+		
 		panelCabecera.add(titulo);
-		panelCabecera.add(new JLabel());
+		panelCabecera.add(atras);
 		
 		
 	}
@@ -276,6 +283,10 @@ public class Ventana extends JFrame{
 	}
 	
 	public void inicializarPanelBajaPremio() throws MaquinaExcepcion {
+		
+		if (panelBajaPremio != null ) {
+			c.remove(panelBajaPremio);
+		}
 			
 		int cantPremios = Casino.getInstancia().getMaquinaView(1).getPremios().size();
 		//System.out.print(cantPremios);
@@ -302,6 +313,8 @@ public class Ventana extends JFrame{
 			y += 60;	
 		
 		}	
+		
+		c.add(panelBajaPremio);
 		
 	}
 	
