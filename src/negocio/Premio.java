@@ -24,7 +24,11 @@ public class Premio {
 		
 		for ( Casilla c: combinacion) {
 			System.out.print("  "+c.obtenerFruta());
+			
 		}
+	}
+	public ArrayList<Casilla> obtenerCombinacion(){
+		return combinacion;
 	}
 	
 	public float obtenerMonto() {

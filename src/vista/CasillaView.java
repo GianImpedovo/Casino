@@ -9,7 +9,14 @@ public class CasillaView {
 	}
 	
 	public String getFruta() {
+		
+		return fruta;
+		
+	}
+	public String toString() {
+		String fruta = " ";
+		 fruta = getFruta();
 		return fruta;
 	}
-
+	
 }
