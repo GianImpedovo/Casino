@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -23,7 +24,9 @@ import javax.swing.SwingConstants;
 
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
+import negocio.Casilla;
 import negocio.Premio;
+import vista.CasillaView;
 
 
 public class Ventana extends JFrame{
@@ -31,11 +34,12 @@ public class Ventana extends JFrame{
 	private static final long serialVersionUID = -6710917183940403534L;
 	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina, saldoDisponible;
 	private JTextField credito, montoPremio;
-	private JButton aceptar, agregarPremio, atras;
+	private JButton aceptar, agregarPremio, atras , eliminarPremio;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
 	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio, panelMaquina;
 	private Container c;
-	private ArrayList<JComboBox<String>> listaDeOpciones;
+	private ArrayList<JComboBox<String>> listaDeOpciones ;
+	private ArrayList<JCheckBox> listaCheckBox ;
 	private JCheckBox premiosBaja;
 	private ArrayList<String> combinacionCasillas;
 
@@ -66,9 +70,9 @@ public class Ventana extends JFrame{
 		inicializarPanelPrincipal();
 		inicializarPanelAltaPremio();
 		inicializarPanelBajaPremio();
-		panelPrincipal.setVisible(true);
+		panelPrincipal.setVisible(false);
 		panelAltaPremio.setVisible(false);
-		panelBajaPremio.setVisible(false);
+		panelBajaPremio.setVisible(true);
 		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
@@ -294,14 +298,14 @@ public class Ventana extends JFrame{
 		}
 			
 		int cantPremios = Casino.getInstancia().getMaquinaView(1).getPremios().size();
-		//System.out.print(cantPremios);
+		
 		
 		panelBajaPremio = new JPanel();
 		panelBajaPremio.setLayout(null);
 		panelBajaPremio.setBounds(0,250,1000,800);
      
 		JLabel tituloBajaPremio = new JLabel("Premio a Eliminar: ");
-        tituloBajaPremio.setBounds(0,0,200,100);
+        tituloBajaPremio.setBounds(70,0,200,100);
         tituloBajaPremio.setFont(new Font("Serif", Font.BOLD, 20));
         panelBajaPremio.add(tituloBajaPremio);
 		
@@ -310,14 +314,25 @@ public class Ventana extends JFrame{
 		
 		// No se imprime como se quiere, fijarse como se manejan los tipos de datos
 		// Hace referencia al epacio en memoria.
+		
+		listaCheckBox= new  ArrayList<JCheckBox>();
+		
 		for (int i=0;i<cantPremios;i++) {
-			String  infoPremio = Casino.getInstancia().getMaquinaView(1).getPremios().get(i).toView().toString();
+			String infoPremio = Casino.getInstancia().getMaquinaView(1).getPremios().get(i).
+					toView().toString();	
 			premiosBaja = new JCheckBox(infoPremio);
-			premiosBaja.setBounds(300,y,200,40);
+			listaCheckBox.add(premiosBaja);
+			premiosBaja.setBounds(300,y,400,50);
 			panelBajaPremio.add(premiosBaja);
 			y += 60;	
 		
 		}	
+		
+		 eliminarPremio = new JButton("Eliminar Premio");
+		 eliminarPremio.setBounds(300,300,200,50);
+	        ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
+	        eliminarPremio.addActionListener(accionBtn);
+	        panelBajaPremio.add(eliminarPremio);
 		
 		c.add(panelBajaPremio);
 		
@@ -354,6 +369,28 @@ public class Ventana extends JFrame{
 					e1.printStackTrace();
 				} catch (MaquinaExcepcion e1) {
 					e1.printStackTrace();
+				}
+				
+				
+			}
+			if(e.getActionCommand() == "Eliminar Premio") {
+				for(int i=0; i < listaCheckBox.size();i++) {
+					if((listaCheckBox.get(i)).isSelected()) {
+					try {
+						ArrayList<Casilla> listaCombinacion =	Casino.getInstancia().getMaquinaView(1).getPremios().get(i).obtenerCombinacion();
+						Casino.getInstancia().bajaPremio(1, listaCombinacion);
+						listaCheckBox.get(i).setVisible(false);
+						JOptionPane.showMessageDialog(ventana, "Se ha eliminado correctamente");
+						i=0;
+					} catch (MaquinaExcepcion e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+						
+				}
+				
 				}
 			}
 			if (e.getActionCommand() == "Atras") {
