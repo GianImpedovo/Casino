@@ -70,9 +70,9 @@ public class Ventana extends JFrame{
 		inicializarPanelPrincipal();
 		inicializarPanelAltaPremio();
 		inicializarPanelBajaPremio();
-		panelPrincipal.setVisible(false);
+		panelPrincipal.setVisible(true);
 		panelAltaPremio.setVisible(false);
-		panelBajaPremio.setVisible(true);
+		panelBajaPremio.setVisible(false);
 		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
@@ -296,8 +296,9 @@ public class Ventana extends JFrame{
 		if (panelBajaPremio != null ) {
 			c.remove(panelBajaPremio);
 		}
-			
-		int cantPremios = Casino.getInstancia().getMaquinaView(1).getPremios().size();
+		
+		String maquinaElegida = (String) nroMaquinas.getSelectedItem();
+		int cantPremios = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getPremios().size();
 		
 		
 		panelBajaPremio = new JPanel();
@@ -318,7 +319,7 @@ public class Ventana extends JFrame{
 		listaCheckBox= new  ArrayList<JCheckBox>();
 		
 		for (int i=0;i<cantPremios;i++) {
-			String infoPremio = Casino.getInstancia().getMaquinaView(1).getPremios().get(i).
+			String infoPremio = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getPremios().get(i).
 					toView().toString();	
 			premiosBaja = new JCheckBox(infoPremio);
 			listaCheckBox.add(premiosBaja);
