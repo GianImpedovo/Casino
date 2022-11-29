@@ -5,6 +5,7 @@ import negocio.Comprobante;
 import negocio.Maquina;
 import negocio.Ticket;
 import vista.CasillaView;
+import vista.ComprobanteView;
 import vista.MaquinaView;
 import vista.TicketView;
 
@@ -19,7 +20,7 @@ public class Casino {
 	private static Casino instancia;
 	private Collection<Ticket> tickets;
 	private Collection<Maquina> maquinas;
-	private Collection<Comprobante> comprobantes;
+	private ArrayList<Comprobante> comprobantes;
 	
 	private Casino() {
 		this.tickets = new ArrayList<Ticket>();
@@ -45,24 +46,26 @@ public class Casino {
 		return t;
 	}
 	
-	public Comprobante jugar(int nroMaquina, Ticket t) throws MaquinaExcepcion{
+	public ComprobanteView jugar(int nroMaquina, Ticket t) throws MaquinaExcepcion{
 		Comprobante c = null;
 		Maquina m = buscarMaquina(nroMaquina);
 		m.iniciarJuego( t.obtenerMonto());
 		c = m.generarComprobante();
 		
-		return c;
+		comprobantes.add(c);
+		return c.toView();
 		
 	}
 	
 	
-	public Comprobante jugar(int nroMaquina) throws MaquinaExcepcion {
+	public ComprobanteView jugar(int nroMaquina) throws MaquinaExcepcion {
 		Comprobante c = null;
 		Maquina m = buscarMaquina(nroMaquina);
 		m.iniciarJuego();
 		c = m.generarComprobante();
 		
-		return c;
+		comprobantes.add(c);
+		return c.toView();
 	}
 	
 	
@@ -122,5 +125,12 @@ public class Casino {
 		Ticket t = new Ticket(monto);
 		return t.toView();
 	}
+	
+	public ComprobanteView obtenerComprobante() {
+		Comprobante aux = comprobantes.get(comprobantes.size() - 1);
+		return aux.toView();
+	}
+	
+	
 
 }

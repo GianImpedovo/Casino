@@ -3,9 +3,13 @@ package giu;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,9 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
+import vista.ComprobanteView;
 import vista.MaquinaView;
 
 public class VentanaMaquina extends JFrame {
@@ -23,7 +29,7 @@ public class VentanaMaquina extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JLabel titulo, creditoDisponible, msjPremio;
 	private MaquinaView mv;
-	private JButton jugar;
+	private JButton jugar, salir;
 	private JPanel panel, botonJugar, panelImagenes;
 	private int idMaquina;
 	private String creditoIngresado;
@@ -39,8 +45,17 @@ public class VentanaMaquina extends JFrame {
 		this.setIconImage(imgMoneda.getImage());
 		this.setBounds(100,100,800,600);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); 
 		
+		// Cierra la ventana manualmente 
+		/*
+		this.addWindowListener(new WindowAdapter() { 
+			@Override public void windowClosing(WindowEvent e) { 
+				//Este método se deshace de la ventana una vez que el usuario hace clic en el botón de cierre. 
+				dispose();
+		}}); 
+		*/
+			
 		configuracion();
 
 	}
@@ -77,6 +92,8 @@ public class VentanaMaquina extends JFrame {
 		botonJugar = new JPanel();
 		botonJugar.setLayout(new GridLayout(3,3));
 		
+		salir = new JButton("Salir");
+		salir.setBackground(Color.GREEN);
 		
 		jugar = new JButton("Jugar");
 		jugar.setBackground(Color.GREEN);
@@ -91,8 +108,20 @@ public class VentanaMaquina extends JFrame {
 		botonJugar.add(jugar);
 		botonJugar.add(creditoDisponible);
 		botonJugar.add(new JLabel());
+		botonJugar.add(salir);
 		botonJugar.add(new JLabel());
-		botonJugar.add(new JLabel());
+		
+		salir.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(e.getActionCommand() == "Salir") {
+					setVisible(false);
+				}
+			}
+			
+		});
+		
+		
 		
 		jugar.addActionListener(new ActionListener(){
 			@Override
@@ -113,6 +142,7 @@ public class VentanaMaquina extends JFrame {
 			
 		});
 	}
+	
 	
 	public void jugadas() throws NumberFormatException, MaquinaExcepcion {
 		if ( Casino.getInstancia().getMaquinaView(idMaquina).getSaldoJugador() != 0 ) {
@@ -177,7 +207,6 @@ public class VentanaMaquina extends JFrame {
 		
 		
 	}
-	
 	
 		
 }
