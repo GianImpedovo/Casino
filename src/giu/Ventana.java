@@ -1,6 +1,7 @@
 package giu;
 
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 
@@ -32,11 +33,11 @@ import vista.CasillaView;
 public class Ventana extends JFrame{
 	
 	private static final long serialVersionUID = -6710917183940403534L;
-	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina, saldoDisponible;
+	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina, saldoDisponible, tituloMaquina, creditoDisponible, msjPremio;
 	private JTextField credito, montoPremio;
-	private JButton aceptar, agregarPremio, atras , eliminarPremio;
+	private JButton aceptar, agregarPremio, atras , eliminarPremio, jugar;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
-	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio, panelMaquina;
+	private JPanel panelPrincipal, panelCabecera, panelMaquina, panelAltaPremio, panelBajaPremio, panelImagenes;
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones ;
 	private ArrayList<JCheckBox> listaCheckBox ;
@@ -68,16 +69,20 @@ public class Ventana extends JFrame{
 		listaDeOpciones = new ArrayList<JComboBox<String>>();
 		inicializarPanelCabecera();
 		inicializarPanelPrincipal();
+		inicializarPanelMaquina();
 		inicializarPanelAltaPremio();
 		inicializarPanelBajaPremio();
 		panelPrincipal.setVisible(true);
+		panelMaquina.setVisible(false);
 		panelAltaPremio.setVisible(false);
 		panelBajaPremio.setVisible(false);
 		
 		c.add(panelCabecera);
 		c.add(panelPrincipal);
+		c.add(panelMaquina);
 		c.add(panelAltaPremio);
 		c.add(panelBajaPremio);
+		
 		
 	}
 	
@@ -85,7 +90,7 @@ public class Ventana extends JFrame{
 		
 		panelCabecera = new JPanel();
 		panelCabecera.setLayout(null);
-		panelCabecera.setBounds(10,10,1000,200);
+		panelCabecera.setBounds(10,10,1000,100);
 		
 		// Valores de cada Label
 		titulo = new JLabel("Casino", SwingConstants.CENTER);
@@ -189,11 +194,12 @@ public class Ventana extends JFrame{
 	}
 	
 	public JPanel inicializaPanelDeDatos() throws MaquinaExcepcion {
+		String maquinaElegida = (String) nroMaquinas.getSelectedItem();
 		JPanel panel_Datos = new JPanel();
 		panel_Datos.setLayout(null);
 		panel_Datos.setBounds(650,0,300,500);
 		
-        datosMaquina = new JLabel(Casino.getInstancia().getMaquinaView(1).toString(), SwingConstants.CENTER);
+        datosMaquina = new JLabel(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).toString(), SwingConstants.CENTER);
         datosMaquina.setFont(new Font("Serif", Font.BOLD, 25));
         datosMaquina.setBounds(30,-20,250,100);
         
@@ -224,6 +230,78 @@ public class Ventana extends JFrame{
         
         return panel_Datos;
 	}
+	
+	
+	public void inicializarPanelMaquina() throws MaquinaExcepcion{
+		if (panelMaquina != null ) {
+			c.remove(panelMaquina);
+		}
+		
+		
+		String maquinaElegida = (String) nroMaquinas.getSelectedItem();
+		
+		panelMaquina = new JPanel();
+		panelMaquina.setLayout(new GridLayout(3,1));
+		panelMaquina.setBounds(20,150,950,470);
+		Color marron = new Color (153, 77, 19);
+		panelMaquina.setBackground(marron);
+		
+		this.tituloMaquina = new JLabel("MAQUINA N° "+ Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getNroMaquina(), SwingConstants.CENTER);
+		tituloMaquina.setFont(new Font("Serif",Font.BOLD,40));
+		
+		inicializarPanelImagenes();
+		JPanel botonJugar = inicializarPanelBoton();
+		
+		panelMaquina.add(tituloMaquina);
+		panelMaquina.add(panelImagenes);
+		panelMaquina.add(botonJugar);
+		
+		c.add(panelMaquina);
+	}
+	public void inicializarPanelImagenes() throws MaquinaExcepcion {
+		String maquinaElegida = (String) nroMaquinas.getSelectedItem();
+		
+		panelImagenes = new JPanel();
+		panelImagenes.setLayout(new GridLayout(1,Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCantCasillas(),20,20));
+		Color oro = new Color (168, 139, 0);
+		panelImagenes.setBackground(oro);
+		
+		for (int i=0; i<  Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCantCasillas();i++) {
+			ImageIcon frutilla = new ImageIcon(getClass().getResource("/img/frutilla.jpg"));
+			panelImagenes.add(new JLabel(frutilla));
+		}
+		
+		
+	}
+	
+	public JPanel inicializarPanelBoton() {
+		Color marron = new Color (153, 77, 19);
+		JPanel botonJugar = new JPanel();
+		botonJugar.setLayout(new GridLayout(3,3));
+		botonJugar.setBackground(marron);
+		
+		jugar = new JButton("Jugar");
+		jugar.setBackground(Color.GREEN);
+		ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
+		jugar.addActionListener(accionBtn);
+		
+		creditoDisponible = new JLabel("Credito : $" + credito, SwingConstants.CENTER);
+		msjPremio = new JLabel("Mensaje de premio", SwingConstants.CENTER);
+		msjPremio.setFont(new Font("Serif", Font.BOLD, 30));
+
+		botonJugar.add(new JLabel());
+		botonJugar.add(new JLabel());
+		botonJugar.add(new JLabel());
+		botonJugar.add(msjPremio);
+		botonJugar.add(jugar);
+		botonJugar.add(new JLabel());
+		botonJugar.add(new JLabel());
+		botonJugar.add(new JLabel());
+		botonJugar.add(new JLabel());
+		
+		return botonJugar;
+	}
+	
 	
 	public void inicializarPanelAltaPremio() throws NumberFormatException, MaquinaExcepcion {
 		
@@ -285,7 +363,6 @@ public class Ventana extends JFrame{
 			combinacionCasillas.clear();
 		
 		
-		
 		for (JComboBox<String> box: listaDeOpciones) {
 			combinacionCasillas.add((String) box.getSelectedItem());
 		}
@@ -313,9 +390,7 @@ public class Ventana extends JFrame{
         
 		int y = 30;
 		
-		// No se imprime como se quiere, fijarse como se manejan los tipos de datos
-		// Hace referencia al epacio en memoria.
-		
+	
 		listaCheckBox= new  ArrayList<JCheckBox>();
 		
 		for (int i=0;i<cantPremios;i++) {
@@ -344,7 +419,7 @@ public class Ventana extends JFrame{
 	class ManejoBotonAceptar implements ActionListener {
 		
 		private JFrame ventana;
-		private VentanaMaquina vm;
+		
 		
 		public ManejoBotonAceptar(JFrame ventana) {
 			this.ventana = ventana;
@@ -378,7 +453,7 @@ public class Ventana extends JFrame{
 				for(int i=0; i < listaCheckBox.size();i++) {
 					if((listaCheckBox.get(i)).isSelected()) {
 					try {
-						ArrayList<Casilla> listaCombinacion =	Casino.getInstancia().getMaquinaView(1).getPremios().get(i).obtenerCombinacion();
+						ArrayList<Casilla> listaCombinacion =	Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getPremios().get(i).obtenerCombinacion();
 						Casino.getInstancia().bajaPremio(1, listaCombinacion);
 						listaCheckBox.get(i).setVisible(false);
 						JOptionPane.showMessageDialog(ventana, "Se ha eliminado correctamente");
@@ -396,20 +471,51 @@ public class Ventana extends JFrame{
 			}
 			if (e.getActionCommand() == "Atras") {
 				panelPrincipal.setVisible(true);
+				panelMaquina.setVisible(false);
 				panelAltaPremio.setVisible(false);
 				panelBajaPremio.setVisible(false);
 				
 			}
+			
+				
+			if(e.getActionCommand() == "Jugar") {
+				try {
+					jugadas(e,  maquinaElegida, creditoIngresado);
+				} catch (NumberFormatException e1) {
+				// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (MaquinaExcepcion e1) {
+				// TODO Auto-generated catch block
+					e1.printStackTrace();
+						}
+						
+					}
+				}
+				
+			
 		}
 
 		public void eleccionPanelPrincipal(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws MaquinaExcepcion {
+			float costeJugada = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCosteJugada();
+			
+			float creditoIngresadoF = Float.valueOf(creditoIngresado);
+			
 			
 				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
-					//JOptionPane.showMessageDialog(ventana, "Ventana jugar");
-					vm = new VentanaMaquina(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getNroMaquina(), creditoIngresado);
-					vm.setVisible(true);
+					
+					if (creditoIngresadoF < costeJugada) {
+						JOptionPane.showMessageDialog(this, " Crédito Insuficiente ");
+						
+					}
+					else {
+					panelPrincipal.setVisible(false);
+					inicializarPanelMaquina();
+					panelMaquina.setVisible(true);
+					}
+					
+					
 				} else if ( opcionElegida == "Jugar" && creditoIngresado.isEmpty() ) {
-					JOptionPane.showMessageDialog(ventana, " No ingresaste nada de credito. ");
+					JOptionPane.showMessageDialog(this, " No ingresaste nada de credito. ");
 				}
 				if ( opcionElegida == "Dar Alta Premio") {
 					panelPrincipal.setVisible(false);
@@ -434,6 +540,71 @@ public class Ventana extends JFrame{
 
 			montoPremio.setText("");
 		}
+		
+		public void jugadas(ActionEvent e,String maquinaElegida, String creditoIngresado) throws NumberFormatException, MaquinaExcepcion {
+			
+			if ( Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getSaldoJugador() != 0 ) {
+				Casino.getInstancia().jugar(Integer.parseInt(maquinaElegida));
+				
+			}
+			
+			
+			else {
+				Casino.getInstancia().jugar(Integer.parseInt(maquinaElegida),
+						Casino.getInstancia().generarTicket(Float.parseFloat(creditoIngresado)));
+			}
+			
+			añadirCasillas(e, maquinaElegida);
+			String saldoJugador = Float.toString(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getSaldoJugador());
+			creditoDisponible.setText(saldoJugador);
+			
+			obtenerResultadoMaquina(e, maquinaElegida);
+			
+		}
+		public void obtenerResultadoMaquina(ActionEvent e,String maquinaElegida) throws MaquinaExcepcion {
+			boolean gano = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).obtenerGano();
+			if ( gano )
+				msjPremio.setText("GANASTE");
+			else {
+				msjPremio.setText("PERDISTE");
+			}
+		}
+		public void añadirCasillas(ActionEvent e,String maquinaElegida) throws NumberFormatException, MaquinaExcepcion {
+			panelImagenes.removeAll();
+			for (int i=0; i<  Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCantCasillas();i++) {
+					
+					String fruta =  Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCasillas().get(i).getFruta();
+					if (fruta == "Frutilla") {
+						ImageIcon frutilla = new ImageIcon(getClass().getResource("/img/frutilla.jpg"));
+						panelImagenes.add(new JLabel(frutilla));
+					}
+					if (fruta == "Banana") {
+						ImageIcon banana = new ImageIcon(getClass().getResource("/img/banana.jpg"));
+						panelImagenes.add(new JLabel(banana));
+					}
+					if (fruta == "Manzana") {
+						ImageIcon manzana = new ImageIcon(getClass().getResource("/img/manzana.jpg"));
+						panelImagenes.add(new JLabel(manzana));
+					}
+					if (fruta == "Sandia") {
+						ImageIcon sandia = new ImageIcon(getClass().getResource("/img/sandia.jpg"));
+						panelImagenes.add(new JLabel(sandia));
+					}
+					if (fruta == "Uva") {
+						ImageIcon uva = new ImageIcon(getClass().getResource("/img/uva.jpg"));
+						panelImagenes.add(new JLabel(uva));
+					}
+					if (fruta == "Guinda") {
+						ImageIcon guinda = new ImageIcon(getClass().getResource("/img/guinda.jpg"));
+						panelImagenes.add(new JLabel(guinda));
+					}
+
+					
+				}
+			
+			panelImagenes.updateUI();
+			
+		
 	}
 	
 	
