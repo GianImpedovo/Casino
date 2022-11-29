@@ -39,14 +39,6 @@ public class Test {
 		//VentanaMaquina mv = new VentanaMaquina(Casino.getInstancia().getMaquinaView(1).getNroMaquina(), "1000");
 		//mv.setVisible(true);
 
-			
-		// Dar de baja Premio
-		/*
-		ArrayList<Casilla> combinacion3 = new ArrayList<Casilla>();
-		combinacion3.add(c5);
-		combinacion3.add(c6);
-		Casino.getInstancia().bajaPremio(1, combinacion3);
-		 */
 		
 
 		}
