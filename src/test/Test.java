@@ -3,7 +3,6 @@ package test;
 import controlador.Casino;
 import excepciones.MaquinaExcepcion;
 import giu.Ventana;
-import giu.VentanaMaquina;
 import negocio.Casilla;
 import negocio.Comprobante;
 import negocio.Ticket;

@@ -397,6 +397,8 @@ public class Ventana extends JFrame{
 			montoPremio.setText("");
 		}
 	}
+	
+	
 }
 
 
