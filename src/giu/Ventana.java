@@ -36,7 +36,7 @@ public class Ventana extends JFrame{
 	private JTextField credito, montoPremio;
 	private JButton aceptar, agregarPremio, atras , eliminarPremio;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
-	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio, panelMaquina;
+	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio;
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones ;
 	private ArrayList<JCheckBox> listaCheckBox ;
@@ -312,9 +312,6 @@ public class Ventana extends JFrame{
 		
         
 		int y = 30;
-		
-		// No se imprime como se quiere, fijarse como se manejan los tipos de datos
-		// Hace referencia al epacio en memoria.
 		
 		listaCheckBox= new  ArrayList<JCheckBox>();
 		
