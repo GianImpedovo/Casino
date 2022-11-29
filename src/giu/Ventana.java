@@ -32,11 +32,11 @@ import vista.CasillaView;
 public class Ventana extends JFrame{
 	
 	private static final long serialVersionUID = -6710917183940403534L;
-	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina;
+	private JLabel titulo, txtMaquina, txtOpciones, txtCredito, datosMaquina, saldoDisponible;
 	private JTextField credito, montoPremio;
 	private JButton aceptar, agregarPremio, atras , eliminarPremio;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
-	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio;
+	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio, panelMaquina;
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones ;
 	private ArrayList<JCheckBox> listaCheckBox ;
@@ -91,6 +91,10 @@ public class Ventana extends JFrame{
 		titulo = new JLabel("Casino", SwingConstants.CENTER);
 		titulo.setBounds(300,50,300,50);
 		titulo.setFont(new Font("Serif", Font.PLAIN, 40));
+		 
+		saldoDisponible = new JLabel("Credito: 0", SwingConstants.CENTER);
+		saldoDisponible.setBounds(600,50,300,50);
+		saldoDisponible.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		atras = new JButton("Atras");
 		atras.setBounds(0,0,200,50);
@@ -100,6 +104,7 @@ public class Ventana extends JFrame{
 		
 		panelCabecera.add(titulo);
 		panelCabecera.add(atras);
+		panelCabecera.add(saldoDisponible);
 		
 		
 	}
@@ -333,6 +338,8 @@ public class Ventana extends JFrame{
 		
 	}
 	
+
+	
 	class ManejoBotonAceptar implements ActionListener {
 		
 		private JFrame ventana;
@@ -386,7 +393,12 @@ public class Ventana extends JFrame{
 				
 				}
 			}
-			
+			if (e.getActionCommand() == "Atras") {
+				panelPrincipal.setVisible(true);
+				panelAltaPremio.setVisible(false);
+				panelBajaPremio.setVisible(false);
+				
+			}
 		}
 
 		public void eleccionPanelPrincipal(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws MaquinaExcepcion {
