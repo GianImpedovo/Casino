@@ -231,7 +231,6 @@ public class Ventana extends JFrame{
         return panel_Datos;
 	}
 	
-	
 	public void inicializarPanelMaquina() throws MaquinaExcepcion{
 		if (panelMaquina != null ) {
 			c.remove(panelMaquina);
@@ -258,6 +257,7 @@ public class Ventana extends JFrame{
 		
 		c.add(panelMaquina);
 	}
+	
 	public void inicializarPanelImagenes() throws MaquinaExcepcion {
 		String maquinaElegida = (String) nroMaquinas.getSelectedItem();
 		
@@ -301,7 +301,6 @@ public class Ventana extends JFrame{
 		
 		return botonJugar;
 	}
-	
 	
 	public void inicializarPanelAltaPremio() throws NumberFormatException, MaquinaExcepcion {
 		
@@ -433,14 +432,16 @@ public class Ventana extends JFrame{
 
 			if(e.getActionCommand() == "Aceptar") {
 				try {
+					System.out.println("entro");
 					eleccionPanelPrincipal( e, maquinaElegida, opcionElegida, creditoIngresado);
 				} catch (MaquinaExcepcion e1) {
 					e1.printStackTrace();
 				}		
 			}
-			if(e.getActionCommand() == "Agregar Premio" && !montoPremio.getText().isEmpty()) {
+			if(e.getActionCommand() == "Agregar Premio") {
 				try {
 					agregarNuevoPremio(e, maquinaElegida, opcionElegida, creditoIngresado);
+					
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				} catch (MaquinaExcepcion e1) {
@@ -450,23 +451,21 @@ public class Ventana extends JFrame{
 				
 			}
 			if(e.getActionCommand() == "Eliminar Premio") {
+				// recorre el checkbox pero si estan los dos items seleccionados 
+				// Cuando busco el premio en la maquina no encuentro nada
 				for(int i=0; i < listaCheckBox.size();i++) {
 					if((listaCheckBox.get(i)).isSelected()) {
-					try {
-						ArrayList<Casilla> listaCombinacion =	Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getPremios().get(i).obtenerCombinacion();
-						Casino.getInstancia().bajaPremio(1, listaCombinacion);
-						listaCheckBox.get(i).setVisible(false);
-						JOptionPane.showMessageDialog(ventana, "Se ha eliminado correctamente");
-						i=0;
-					} catch (MaquinaExcepcion e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						try {
+							ArrayList<Casilla> listaCombinacion =	Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getPremios().get(i).obtenerCombinacion();
+							Casino.getInstancia().bajaPremio(Integer.parseInt(maquinaElegida), listaCombinacion);
+							listaCheckBox.get(i).setVisible(false);
+							listaCheckBox.remove(i);
+							JOptionPane.showMessageDialog(ventana, "Se ha eliminado correctamente");
+						} catch (MaquinaExcepcion e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}			
 					}
-					
-					
-						
-				}
-				
 				}
 			}
 			if (e.getActionCommand() == "Atras") {
@@ -492,26 +491,23 @@ public class Ventana extends JFrame{
 					}
 				}
 				
-			
 		}
 
 		public void eleccionPanelPrincipal(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws MaquinaExcepcion {
 			float costeJugada = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCosteJugada();
-			
-			float creditoIngresadoF = Float.valueOf(creditoIngresado);
-			
+			//System.out.println("\n coste jugada: " + costeJugada);
 			
 				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
+					float creditoIngresadoF = Float.valueOf(creditoIngresado);
 					
 					if (creditoIngresadoF < costeJugada) {
 						JOptionPane.showMessageDialog(this, " Crédito Insuficiente ");
 						
-					}
-					else {
-					panelPrincipal.setVisible(false);
-					inicializarPanelMaquina();
-					panelMaquina.setVisible(true);
-					}
+					} else {
+						panelPrincipal.setVisible(false);
+						inicializarPanelMaquina();
+						panelMaquina.setVisible(true);
+					} 
 					
 					
 				} else if ( opcionElegida == "Jugar" && creditoIngresado.isEmpty() ) {
@@ -534,11 +530,18 @@ public class Ventana extends JFrame{
 		}
 		
 		public void agregarNuevoPremio(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws NumberFormatException, MaquinaExcepcion {
-			float monto = Float.parseFloat(montoPremio.getText());
-			crearCombinacionCasillaView();
-			Casino.getInstancia().altaPremio(monto, Integer.parseInt(maquinaElegida), combinacionCasillas);
-
-			montoPremio.setText("");
+			
+			
+			if(!((String)montoPremio.getText()).isEmpty()) {
+				float monto = Float.parseFloat((String)montoPremio.getText());
+				crearCombinacionCasillaView();
+				Casino.getInstancia().altaPremio(monto, Integer.parseInt(maquinaElegida), combinacionCasillas);				
+				JOptionPane.showMessageDialog(this, "Se ha Agregado correctamente");
+				montoPremio.setText("");
+			}else {
+				JOptionPane.showMessageDialog(this, " No ingresaste monto para el premio ");
+			}
+			
 		}
 		
 		public void jugadas(ActionEvent e,String maquinaElegida, String creditoIngresado) throws NumberFormatException, MaquinaExcepcion {
@@ -561,6 +564,7 @@ public class Ventana extends JFrame{
 			obtenerResultadoMaquina(e, maquinaElegida);
 			
 		}
+		
 		public void obtenerResultadoMaquina(ActionEvent e,String maquinaElegida) throws MaquinaExcepcion {
 			boolean gano = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).obtenerGano();
 			if ( gano )
@@ -569,6 +573,7 @@ public class Ventana extends JFrame{
 				msjPremio.setText("PERDISTE");
 			}
 		}
+		
 		public void añadirCasillas(ActionEvent e,String maquinaElegida) throws NumberFormatException, MaquinaExcepcion {
 			panelImagenes.removeAll();
 			for (int i=0; i<  Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCantCasillas();i++) {
