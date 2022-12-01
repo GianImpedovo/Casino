@@ -14,10 +14,11 @@ public class MaquinaView {
 	private float saldoJugador;
 	private float costeJugada;
 	private boolean gano;
+	private float recaudacion;
 	
 	
 	public MaquinaView(int nroMaquina, ArrayList<Premio> premios, int cantCasillas, ArrayList<CasillaView> casillas, 
-			float saldoJugador, float costeJugada, boolean gano) {
+			float saldoJugador, float costeJugada, boolean gano, float recaudacion) {
 		this.nroMaquina = nroMaquina;
 		this.premios = premios;
 		this.cantCasillas = cantCasillas;
@@ -25,6 +26,7 @@ public class MaquinaView {
 		this.saldoJugador = saldoJugador;
 		this.costeJugada = costeJugada;
 		this.gano = gano;
+		this.recaudacion = recaudacion ;
 		
 	}
 
@@ -38,6 +40,10 @@ public class MaquinaView {
 	
 	public float getCosteJugada() {
 		return costeJugada;
+	}
+	
+	public float getRecaudacion() {
+		return recaudacion;
 	}
 	
 	public ArrayList<Premio> getPremios() {
@@ -70,6 +76,10 @@ public class MaquinaView {
 	
 	public boolean obtenerGano() {
 		return gano;
+	}
+	
+	public void reiniciarSaldoJugador() {
+		saldoJugador = 0;
 	}
 
 }

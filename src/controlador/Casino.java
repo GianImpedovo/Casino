@@ -132,5 +132,13 @@ public class Casino {
 	}
 	
 	
+	public Maquina maquinaReiniciada(int nroMaquina) throws MaquinaExcepcion {
+		Maquina m = buscarMaquina(nroMaquina);
+		m.reiniciarSaldoJugador();
+		return m;
+		
+	}
+	
+	
 
 }

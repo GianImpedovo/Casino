@@ -4,7 +4,7 @@ import vista.TicketView;
 
 public class Ticket {
 	
-	private static int aumentoNroTicket = 0;
+	private static int aumentoNroTicket = 1;
 	private int nroTicket;
 	private float monto;
 	

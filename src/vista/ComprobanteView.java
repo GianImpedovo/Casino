@@ -22,6 +22,10 @@ public class ComprobanteView {
 		return nroComprobante;
 	}
 	
+	public String toString() {
+		String informacion = "Comprobante nro: " + nroComprobante + " | Saldo: " + monto;
+		return informacion;
+	}
 	
 
 }

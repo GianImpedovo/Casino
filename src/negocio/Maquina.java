@@ -166,6 +166,11 @@ public class Maquina {
 		return alcanza;
 	}
 	
+	
+	public void reiniciarSaldoJugador() {
+		saldoJugador = 0;
+	}
+	
 	public MaquinaView toView() {
 		generarCasillas();
 		ArrayList<CasillaView> casillasVista = new ArrayList<CasillaView>();
@@ -173,7 +178,7 @@ public class Maquina {
 			casillasVista.add(c.toView());
 		}
 		//System.out.println(premios.get(0).toView().obtenerMonto());
-		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada, gano);
+		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada, gano,recaudacion);
 		return mv;
 	}
 }

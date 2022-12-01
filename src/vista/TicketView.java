@@ -22,7 +22,10 @@ public class TicketView {
 		return nroTicket;
 	}
 	
-	
+	public String toString() {
+		String informacion = "Ticket nro: " + nroTicket + " | Crédito: " + monto;
+		return informacion;
+	}
 	
 
 }

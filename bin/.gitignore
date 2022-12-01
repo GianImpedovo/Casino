@@ -1,8 +1,4 @@
-/controlador/
-/excepciones/
-/giu/
-/img/
-/module-info.class
-/negocio/
-/test/
 /vista/
+/giu/
+/negocio/
+/controlador/
