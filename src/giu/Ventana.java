@@ -37,11 +37,7 @@ public class Ventana extends JFrame{
 	private JTextField credito, montoPremio;
 	private JButton aceptar, agregarPremio, atras , eliminarPremio, jugar;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
-<<<<<<< HEAD
-	private JPanel panelPrincipal, panelCabecera, panelAltaPremio, panelBajaPremio;
-=======
 	private JPanel panelPrincipal, panelCabecera, panelMaquina, panelAltaPremio, panelBajaPremio, panelImagenes;
->>>>>>> 455fad1f6f0effbf1ba175574501a5f38e4504e2
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones ;
 	private ArrayList<JCheckBox> listaCheckBox ;
@@ -392,11 +388,6 @@ public class Ventana extends JFrame{
 		
         
 		int y = 30;
-		
-<<<<<<< HEAD
-=======
-	
->>>>>>> 455fad1f6f0effbf1ba175574501a5f38e4504e2
 		listaCheckBox= new  ArrayList<JCheckBox>();
 		
 		for (int i=0;i<cantPremios;i++) {
