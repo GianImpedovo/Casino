@@ -587,16 +587,14 @@ public class Ventana extends JFrame{
 			creditoDisponible.setText(saldoJugador);
 			
 			float saldoJugador2  = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getSaldoJugador();
-			float costeJugada = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCosteJugada();
+			float costeJugada2 = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCosteJugada();
 			
 			
-			if (saldoJugador2 < costeJugada) {
-				Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).reiniciarSaldoJugador();
+			if (saldoJugador2 < costeJugada2) {
 				JOptionPane.showMessageDialog(this, " Saldo Insuficiente. ");
-				panelMaquina.setVisible(false);
-				panelPrincipal.setVisible(true);
-				String comprobante = Casino.getInstancia().obtenerComprobante().toString();
-				JOptionPane.showMessageDialog(this,  comprobante);
+				Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).reiniciarSaldoJugador();
+				noJuegaMas(maquinaElegida);
+				
 				
 				}
 			
@@ -607,11 +605,25 @@ public class Ventana extends JFrame{
 		
 		public void obtenerResultadoMaquina(ActionEvent e,String maquinaElegida) throws MaquinaExcepcion {
 			boolean gano = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).obtenerGano();
-			if ( gano )
+			if ( gano ) {
 				msjPremio.setText("GANASTE");
+				int resp = JOptionPane.showConfirmDialog(this, "¿Quéres seguir jugando?");
+				 if(resp == JOptionPane.NO_OPTION) {
+					 Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).reiniciarSaldoJugador();
+					 noJuegaMas(maquinaElegida);
+				 }
+			}
 			else {
 				msjPremio.setText("PERDISTE");
 			}
+		}
+		
+		
+		public void noJuegaMas(String maquinaElegida) throws NumberFormatException, MaquinaExcepcion {
+			panelMaquina.setVisible(false);
+			panelPrincipal.setVisible(true);
+			String comprobante = Casino.getInstancia().obtenerComprobante().toString();
+			JOptionPane.showMessageDialog(this,  comprobante); 
 		}
 		
 		public void añadirCasillas(ActionEvent e,String maquinaElegida) throws NumberFormatException, MaquinaExcepcion {
