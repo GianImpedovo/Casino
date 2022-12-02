@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import vista.CasillaView;
 import vista.MaquinaView;
+import vista.PremioView;
 
 public class Maquina {
 	
@@ -18,6 +19,7 @@ public class Maquina {
 	private boolean gano;
 	
 	public Maquina(float recaudacion, int cantCasillas, float costeJugada){
+		System.out.println("Se creo maquina");
 		this.recaudacion = recaudacion;
 		this.premios = new ArrayList<Premio>();
 		this.cantCasillas = cantCasillas;
@@ -139,10 +141,14 @@ public class Maquina {
 		System.out.println("\nSe dio de alta el premio con monto : " + p.obtenerMonto());
 	}
 	
-	public void darBajaPremio(ArrayList<Casilla> combinacion) {
+	public void darBajaPremio(ArrayList<CasillaView> combinacion) {
 		int i = -1;
+		ArrayList<Casilla> combinacionCasilla = new ArrayList<Casilla>();
+		for (CasillaView c: combinacion) {
+			combinacionCasilla.add(new Casilla(c.getFruta()));
+		}
 		for ( Premio p: premios ) {
-			if (p.soyEsePremio(combinacion)) {
+			if (p.soyEsePremio(combinacionCasilla)) {
 				i = premios.indexOf(p);
 				System.out.print("\nSe da de baja el premio con monto: " + premios.get(i).obtenerMonto() + "\n");
 			}
@@ -177,8 +183,13 @@ public class Maquina {
 		for (Casilla c: casillas) {
 			casillasVista.add(c.toView());
 		}
+		ArrayList<PremioView> premiosView = new ArrayList<PremioView>();
+		for ( Premio p: premios) {
+			premiosView.add(p.toView());
+		}
 		//System.out.println(premios.get(0).toView().obtenerMonto());
-		MaquinaView mv = new MaquinaView(nroMaquina, premios, cantCasillas, casillasVista, saldoJugador, costeJugada, gano,recaudacion);
+		MaquinaView mv = new MaquinaView(nroMaquina, premiosView, cantCasillas, casillasVista, saldoJugador, costeJugada, gano,recaudacion);
 		return mv;
 	}
+
 }

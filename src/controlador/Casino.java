@@ -40,16 +40,16 @@ public class Casino {
 		return instancia;
 	}
 	
-	public Ticket generarTicket(float monto){
+	public TicketView generarTicket(float monto){
 		Ticket t = new Ticket(monto);
 		tickets.add(t);
-		return t;
+		return t.toView();
 	}
 	
-	public ComprobanteView jugar(int nroMaquina, Ticket t) throws MaquinaExcepcion{
+	public ComprobanteView jugar(int nroMaquina, TicketView t) throws MaquinaExcepcion{
 		Comprobante c = null;
 		Maquina m = buscarMaquina(nroMaquina);
-		m.iniciarJuego( t.obtenerMonto());
+		m.iniciarJuego( t.getMonto());
 		c = m.generarComprobante();
 		
 		comprobantes.add(c);
@@ -86,7 +86,7 @@ public class Casino {
 			
 	}
 	
-	public void bajaPremio (int nroMaquina, ArrayList<Casilla> combinacion) throws MaquinaExcepcion {
+	public void bajaPremio (int nroMaquina, ArrayList<CasillaView> combinacion) throws MaquinaExcepcion {
 		Maquina m = buscarMaquina(nroMaquina);
 		m.darBajaPremio(combinacion);
 		
@@ -121,22 +121,26 @@ public class Casino {
 		return m.toView();
 	}
 	
-	public TicketView generarTicketView(Float monto) {
-		Ticket t = new Ticket(monto);
-		return t.toView();
-	}
 	
 	public ComprobanteView obtenerComprobante() {
 		Comprobante aux = comprobantes.get(comprobantes.size() - 1);
 		return aux.toView();
 	}
 	
-	
-	public Maquina maquinaReiniciada(int nroMaquina) throws MaquinaExcepcion {
+	public MaquinaView maquinaReiniciada(int nroMaquina) throws MaquinaExcepcion {
 		Maquina m = buscarMaquina(nroMaquina);
 		m.reiniciarSaldoJugador();
-		return m;
+		return m.toView();
 		
+	}
+	
+	public void agregarMaquina(float recaudacion, int cantCasillas, float costeJugada) {
+		Maquina m = new Maquina(recaudacion, cantCasillas, costeJugada);
+		maquinas.add(m);
+	}
+	
+	public int getCantidadMaquinas() {
+		return maquinas.size();
 	}
 	
 	

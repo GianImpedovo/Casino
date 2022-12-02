@@ -9,7 +9,7 @@ import negocio.Premio;
 public class MaquinaView {
 	
 	private int nroMaquina;
-	private ArrayList<Premio> premios;
+	private ArrayList<PremioView> premios;
 	private int cantCasillas;
 	private ArrayList<CasillaView> casillas;
 	private float saldoJugador;
@@ -18,7 +18,7 @@ public class MaquinaView {
 	private float recaudacion;
 	
 	
-	public MaquinaView(int nroMaquina, ArrayList<Premio> premios, int cantCasillas, ArrayList<CasillaView> casillas, 
+	public MaquinaView(int nroMaquina, ArrayList<PremioView> premios, int cantCasillas, ArrayList<CasillaView> casillas, 
 			float saldoJugador, float costeJugada, boolean gano, float recaudacion) {
 		this.nroMaquina = nroMaquina;
 		this.premios = premios;
@@ -47,10 +47,10 @@ public class MaquinaView {
 		return recaudacion;
 	}
 	
-	public ArrayList<Premio> getPremios() {
+	public ArrayList<PremioView> getPremios() {
 		return premios;
 	}
-	public void setPremios(ArrayList<Premio> premios) {
+	public void setPremios(ArrayList<PremioView> premios) {
 		this.premios = premios;
 	}
 	public ArrayList<CasillaView> getCasillas() {
@@ -68,7 +68,7 @@ public class MaquinaView {
 	
 	public boolean alcanzaRecaudacion(){
 		boolean alcanza = true;
-		for (Premio p: premios) {
+		for (PremioView p: premios) {
 			if (p.obtenerMonto() > this.recaudacion )
 				alcanza = false;
 		}
