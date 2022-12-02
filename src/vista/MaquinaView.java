@@ -2,6 +2,7 @@ package vista;
 
 import java.util.ArrayList;
 
+import controlador.Casino;
 import negocio.Casilla;
 import negocio.Premio;
 
@@ -64,6 +65,16 @@ public class MaquinaView {
 	public void setSaldoJugador(float saldoJugador) {
 		this.saldoJugador = saldoJugador;
 	}
+	
+	public boolean alcanzaRecaudacion(){
+		boolean alcanza = true;
+		for (Premio p: premios) {
+			if (p.obtenerMonto() > this.recaudacion )
+				alcanza = false;
+		}
+		return alcanza;
+	}
+	
 	
 	public String toString() {
 		String datos = "casillas: " + cantCasillas + " | coste: " + costeJugada;

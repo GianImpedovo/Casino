@@ -27,9 +27,11 @@ import controlador.Casino;
 import excepciones.MaquinaExcepcion;
 import negocio.Casilla;
 import negocio.Comprobante;
+import negocio.Maquina;
 import negocio.Premio;
 import vista.CasillaView;
 import vista.ComprobanteView;
+import vista.MaquinaView;
 
 
 public class Ventana extends JFrame{
@@ -99,9 +101,6 @@ public class Ventana extends JFrame{
 		titulo.setBounds(300,50,300,50);
 		titulo.setFont(new Font("Serif", Font.PLAIN, 40));
 		 
-		saldoDisponible = new JLabel("Credito: 0", SwingConstants.CENTER);
-		saldoDisponible.setBounds(600,50,300,50);
-		saldoDisponible.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		atras = new JButton("Atras");
 		atras.setBounds(0,0,200,50);
@@ -111,7 +110,7 @@ public class Ventana extends JFrame{
 		
 		panelCabecera.add(titulo);
 		panelCabecera.add(atras);
-		panelCabecera.add(saldoDisponible);
+		panelCabecera.add(new JLabel());
 		
 		
 	}
@@ -277,6 +276,8 @@ public class Ventana extends JFrame{
 	}
 	
 	public JPanel inicializarPanelBoton() {
+		String creditoIngresado = (String)credito.getText();
+		
 		Color marron = new Color (153, 77, 19);
 		JPanel botonJugar = new JPanel();
 		botonJugar.setLayout(new GridLayout(3,3));
@@ -287,7 +288,7 @@ public class Ventana extends JFrame{
 		ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
 		jugar.addActionListener(accionBtn);
 		
-		creditoDisponible = new JLabel("Credito : $" + credito, SwingConstants.CENTER);
+		creditoDisponible = new JLabel("Credito Disponible : $" + creditoIngresado, SwingConstants.CENTER);
 		msjPremio = new JLabel("Mensaje de premio", SwingConstants.CENTER);
 		msjPremio.setFont(new Font("Serif", Font.BOLD, 30));
 
@@ -296,7 +297,7 @@ public class Ventana extends JFrame{
 		botonJugar.add(new JLabel());
 		botonJugar.add(msjPremio);
 		botonJugar.add(jugar);
-		botonJugar.add(new JLabel());
+		botonJugar.add(creditoDisponible);
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
 		botonJugar.add(new JLabel());
@@ -404,7 +405,7 @@ public class Ventana extends JFrame{
 		}	
 		
 		 eliminarPremio = new JButton("Eliminar Premio");
-		 eliminarPremio.setBounds(300,300,200,50);
+		 eliminarPremio.setBounds(700,100,200,50);
 	        ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
 	        eliminarPremio.addActionListener(accionBtn);
 	        panelBajaPremio.add(eliminarPremio);
@@ -471,6 +472,7 @@ public class Ventana extends JFrame{
 			if (e.getActionCommand() == "Atras") {
 				
 					try {
+						creditoIngresado.replaceAll(creditoIngresado," ");
 						reiniciarSaldoJugador(maquinaElegida);
 						panelPrincipal.setVisible(true);
 						panelMaquina.setVisible(false);
@@ -506,7 +508,8 @@ public class Ventana extends JFrame{
 
 		public void eleccionPanelPrincipal(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws MaquinaExcepcion {
 			float costeJugada = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCosteJugada();
-			//System.out.println("\n coste jugada: " + costeJugada);
+			Boolean alcanzaRecaudacion = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).alcanzaRecaudacion();
+			
 			
 				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
 					float creditoIngresadoF = Float.valueOf(creditoIngresado);
@@ -515,6 +518,13 @@ public class Ventana extends JFrame{
 						JOptionPane.showMessageDialog(this, " Crédito Insuficiente ");
 						
 					} else {
+						 if(alcanzaRecaudacion == false) {
+							 JOptionPane.showMessageDialog(this, " Es posible que no se pueda pagar el premio mayor "); 
+							 
+						 }
+						 
+						
+						
 						String ticket = Casino.getInstancia().generarTicketView(creditoIngresadoF).toString();
 						JOptionPane.showMessageDialog(this,  ticket);
 						
@@ -543,22 +553,20 @@ public class Ventana extends JFrame{
 		
 		}
 		
-		public void reiniciarSaldoJugador (String maquinaElegida) throws NumberFormatException, MaquinaExcepcion {
-			 Casino.getInstancia().maquinaReiniciada(Integer.parseInt(maquinaElegida));
-							
+		public Maquina reiniciarSaldoJugador (String maquinaElegida) throws NumberFormatException, MaquinaExcepcion {
+			Maquina m = Casino.getInstancia().maquinaReiniciada(Integer.parseInt(maquinaElegida));
+				
+			return m;
 			}
 		
 		public void agregarNuevoPremio(ActionEvent e, String maquinaElegida, String opcionElegida, String creditoIngresado) throws NumberFormatException, MaquinaExcepcion {
 			
 			
 			if(!((String)montoPremio.getText()).isEmpty()) {
-				float recaudacion = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getRecaudacion();
+				
 				float monto = Float.parseFloat((String)montoPremio.getText());
 				crearCombinacionCasillaView();
 				Casino.getInstancia().altaPremio(monto, Integer.parseInt(maquinaElegida), combinacionCasillas);	
-				//if(monto > recaudacion) {
-					//JOptionPane.showMessageDialog(this, "Es posible que la maquina no alcance a pagar el premio");
-				//}
 				
 				JOptionPane.showMessageDialog(this, "Se ha Agregado correctamente");
 				montoPremio.setText("");
@@ -584,7 +592,7 @@ public class Ventana extends JFrame{
 			
 			añadirCasillas(e, maquinaElegida);
 			String saldoJugador = Float.toString(Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getSaldoJugador());
-			creditoDisponible.setText(saldoJugador);
+			creditoDisponible.setText("Crédito Disponible:  $" + saldoJugador);
 			
 			float saldoJugador2  = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getSaldoJugador();
 			float costeJugada2 = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getCosteJugada();
@@ -592,7 +600,7 @@ public class Ventana extends JFrame{
 			
 			if (saldoJugador2 < costeJugada2) {
 				JOptionPane.showMessageDialog(this, " Saldo Insuficiente. ");
-				Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).reiniciarSaldoJugador();
+				reiniciarSaldoJugador(maquinaElegida);
 				noJuegaMas(maquinaElegida);
 				
 				
@@ -609,7 +617,7 @@ public class Ventana extends JFrame{
 				msjPremio.setText("GANASTE");
 				int resp = JOptionPane.showConfirmDialog(this, "¿Quéres seguir jugando?");
 				 if(resp == JOptionPane.NO_OPTION) {
-					 Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).reiniciarSaldoJugador();
+					 reiniciarSaldoJugador(maquinaElegida);
 					 noJuegaMas(maquinaElegida);
 				 }
 			}
