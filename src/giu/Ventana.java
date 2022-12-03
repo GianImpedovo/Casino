@@ -39,13 +39,13 @@ public class Ventana extends JFrame{
 	private static final long serialVersionUID = -6710917183940403534L;
 	private JLabel titulo, tituloInicial, opcionJugar,txtMaquina, txtOpciones, txtCredito, datosMaquina, tituloMaquina, creditoDisponible, msjPremio, txtRecaudacion,txtCantCasillas, txtCosteJugada;
 	private JTextField credito, montoPremio, recaudacion, cantCasillas, costeJugada;
-	private JButton aceptar, agregarPremio, atras , eliminarPremio, jugar, btnCliente, btnAdministrador, btnAgregarMaquina;
+	private JButton aceptar, agregarPremio, atras , eliminarPremio, jugar, btnCliente, btnAdministrador, btnAgregarMaquina, btnEliminarMaquina;
 	private JComboBox<String>  opciones, nroMaquinas, nombresFrutas;
-	private JPanel panelPrincipal, panelCabecera, panelMaquina, panelAltaPremio, panelBajaPremio, panelImagenes, panelCrearMaquina, panelInicio;
+	private JPanel panelPrincipal, panelCabecera, panelMaquina, panelAltaPremio, panelBajaPremio, panelImagenes, panelCrearMaquina, panelInicio, panelEliminarMaquina;
 	private Container c;
 	private ArrayList<JComboBox<String>> listaDeOpciones ;
 	private ArrayList<JCheckBox> listaCheckBox ;
-	private JCheckBox premiosBaja;
+	private JCheckBox premiosBaja, maquinaBaja;
 	private ArrayList<String> combinacionCasillas;
 	private boolean soyCliente;
 	private ArrayList<JPanel> pila;
@@ -82,6 +82,7 @@ public class Ventana extends JFrame{
 		inicializarPanelBajaPremio();
 		inicializarPanelMaquina();
 		inicializarPanelInicio();
+		inicializarPanelEliminarMaquina();
 		
 		
 		panelCabecera.setVisible(false);
@@ -90,6 +91,7 @@ public class Ventana extends JFrame{
 		panelAltaPremio.setVisible(false);
 		panelBajaPremio.setVisible(false);
 		panelCrearMaquina.setVisible(false);
+		panelEliminarMaquina.setVisible(false);
 		panelInicio.setVisible(true);
 		
 		
@@ -100,6 +102,7 @@ public class Ventana extends JFrame{
 		c.add(panelMaquina);
 		c.add(panelAltaPremio);
 		c.add(panelBajaPremio);
+		c.add(panelEliminarMaquina);
 		
 		
 	}
@@ -216,20 +219,17 @@ public class Ventana extends JFrame{
 	}
 	
 	public JPanel inicializaPanelDeOpciones() throws MaquinaExcepcion {
+		
 		JPanel panel_Opciones = new JPanel();
 		panel_Opciones.setLayout(null);
 		panel_Opciones.setBounds(300,0,300,400);
 		
 		String[] nros = new String[Casino.getInstancia().getCantidadMaquinas()];
+		System.out.println(Casino.getInstancia().getCantidadMaquinas());
 		
 		for(int i = 0; i < Casino.getInstancia().getCantidadMaquinas(); i++) {
-			nros[i] = Casino.getInstancia().getMaquinaView(i + 1).obtenerNombre();
+			nros[i] = Casino.getInstancia().getMaquina(i).obtenerNombre();
 		}
-		/*
-        String[] nros = {Casino.getInstancia().getMaquinaView(1).obtenerNombre(),
-				 Casino.getInstancia().getMaquinaView(2).obtenerNombre(),
-			     Casino.getInstancia().getMaquinaView(3).obtenerNombre()};
-		*/	     
 		
         nroMaquinas = new JComboBox<>(nros);
         
@@ -246,12 +246,11 @@ public class Ventana extends JFrame{
         	panel_Opciones.add(opcionJugar);
             panel_Opciones.add(credito);
         } else {
-        	String[] listaOpciones = {"Dar Alta Premio", "Dar Baja Premio", "Crear Maquina"};
+        	String[] listaOpciones = {"Dar Alta Premio", "Dar Baja Premio", "Crear Maquina", "Eliminar Maquina"};
         	opciones = new JComboBox<>(listaOpciones);
         	panel_Opciones.add(opciones);
         }
         
-        //opciones = new JComboBox<>(listaOpciones);
         ((JLabel)opciones.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         opciones.setBounds(0,85,300,50);
 
@@ -509,7 +508,6 @@ public class Ventana extends JFrame{
 		String maquinaElegida = (String) nroMaquinas.getSelectedItem();
 		int cantPremios = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).getPremios().size();
 		
-		
 		panelBajaPremio = new JPanel();
 		panelBajaPremio.setLayout(null);
 		panelBajaPremio.setBounds(0,250,1000,800);
@@ -543,6 +541,45 @@ public class Ventana extends JFrame{
 		
 	}
 	
+	public void inicializarPanelEliminarMaquina() throws MaquinaExcepcion {
+		if (panelEliminarMaquina != null ) {
+			c.remove(panelEliminarMaquina);
+		}
+		
+		panelEliminarMaquina = new JPanel();
+		panelEliminarMaquina.setLayout(null);
+		panelEliminarMaquina.setBounds(0,250,1000,800);
+		
+		JLabel tituloBajaMaquina = new JLabel("Maquina a Eliminar: ");
+		tituloBajaMaquina.setBounds(70,0,200,100);
+		tituloBajaMaquina.setFont(new Font("Serif", Font.BOLD, 20));
+		panelEliminarMaquina.add(tituloBajaMaquina);
+		
+		// Adaptar codigo : 
+		String[] nros = new String[Casino.getInstancia().getCantidadMaquinas()];
+		
+		for(int i = 0; i < Casino.getInstancia().getCantidadMaquinas(); i++) {
+			nros[i] = Casino.getInstancia().getMaquina(i).obtenerNombre();
+		}    
+		
+        nroMaquinas = new JComboBox<>(nros);
+        
+        ((JLabel)nroMaquinas.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        nroMaquinas.setBounds(290,30,300,50);
+		
+		
+		btnEliminarMaquina = new JButton("Eliminar Maquina");
+		btnEliminarMaquina.setBounds(340,200,200,50);
+	    ManejoBotonAceptar accionBtn = new ManejoBotonAceptar(this);
+	    btnEliminarMaquina.addActionListener(accionBtn);
+	     
+	     
+	    panelEliminarMaquina.add(btnEliminarMaquina);
+	    panelEliminarMaquina.add(nroMaquinas);
+		
+		// fin
+		c.add(panelEliminarMaquina);
+	}
 
 	
 	class ManejoBotonAceptar implements ActionListener {
@@ -612,8 +649,6 @@ public class Ventana extends JFrame{
 				
 			}
 			if(e.getActionCommand() == "Eliminar Premio") {
-				// recorre el checkbox pero si estan los dos items seleccionados 
-				// Cuando busco el premio en la maquina no encuentro nada
 				for(int i=0; i < listaCheckBox.size();i++) {
 					if((listaCheckBox.get(i)).isSelected()) {
 						try {
@@ -646,6 +681,18 @@ public class Ventana extends JFrame{
 				
 			}
 			
+			if(e.getActionCommand() == "Eliminar Maquina") {
+				int nroMaquina = Integer.parseInt(maquinaElegida);
+				try {
+					Casino.getInstancia().eliminarMaquina(nroMaquina);
+					JOptionPane.showMessageDialog(ventana, " La Maquina se elimino Correctamente ");
+					inicializarPanelEliminarMaquina();
+				} catch (MaquinaExcepcion e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
 			if (e.getActionCommand() == "Atras") {
 				try {
 					inicializarPanelPrincipal();
@@ -668,8 +715,12 @@ public class Ventana extends JFrame{
 						panelAltaPremio.setVisible(false);
 						panelBajaPremio.setVisible(false);
 						panelCrearMaquina.setVisible(false);
-						credito.setText("");
-						reiniciarSaldoJugador(maquinaElegida);
+						panelEliminarMaquina.setVisible(false);
+						
+						if ( soyCliente ) {
+							reiniciarSaldoJugador(maquinaElegida);
+							credito.setText("");
+						}
 
 					
 					} catch (NumberFormatException e1) {
@@ -745,6 +796,13 @@ public class Ventana extends JFrame{
 				
 				if( opcionElegida == "Crear Maquina") {
 					panelCrearMaquina.setVisible(true);
+					inicializarPanelCrearMaquina();
+					panelPrincipal.setVisible(false);
+				}
+				
+				if( opcionElegida == "Eliminar Maquina") {
+					panelEliminarMaquina.setVisible(true);
+					inicializarPanelEliminarMaquina();
 					panelPrincipal.setVisible(false);
 				}
 

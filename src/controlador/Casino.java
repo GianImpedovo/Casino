@@ -19,7 +19,7 @@ public class Casino {
 	
 	private static Casino instancia;
 	private Collection<Ticket> tickets;
-	private Collection<Maquina> maquinas;
+	private ArrayList<Maquina> maquinas;
 	private ArrayList<Comprobante> comprobantes;
 	
 	private Casino() {
@@ -141,6 +141,16 @@ public class Casino {
 	
 	public int getCantidadMaquinas() {
 		return maquinas.size();
+	}
+	
+	public void eliminarMaquina(int nroMaquina) throws MaquinaExcepcion {
+		Maquina m = buscarMaquina(nroMaquina);
+		maquinas.remove(m);
+	}
+	
+	public MaquinaView getMaquina(int i) {
+		Maquina m = maquinas.get(i);
+		return m.toView();
 	}
 	
 	
