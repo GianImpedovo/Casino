@@ -353,6 +353,8 @@ public class Ventana extends JFrame{
 		panelCrearMaquina.add(cantCasillas);
 		panelCrearMaquina.add(costeJugada);
 		panelCrearMaquina.add(btnAgregarMaquina);
+		
+		c.add(panelCrearMaquina);
 
 	}
 	
@@ -498,7 +500,7 @@ public class Ventana extends JFrame{
 		}
 	}
 	
-	
+
 	public void inicializarPanelBajaPremio() throws MaquinaExcepcion {
 		
 		if (panelBajaPremio != null ) {
@@ -677,6 +679,10 @@ public class Ventana extends JFrame{
 					Casino.getInstancia().agregarMaquina(recaudacionIngresada, casillas, costeJ);
 					JOptionPane.showMessageDialog(ventana, " La Maquina se creo Correctamente ");
 				}
+				
+				recaudacion.setText("");
+				cantCasillas.setText("");
+				costeJugada.setText("");
 
 				
 			}
