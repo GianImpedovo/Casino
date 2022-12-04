@@ -557,7 +557,7 @@ public class Ventana extends JFrame{
 		tituloBajaMaquina.setFont(new Font("Serif", Font.BOLD, 20));
 		panelEliminarMaquina.add(tituloBajaMaquina);
 		
-		// Adaptar codigo : 
+		
 		String[] nros = new String[Casino.getInstancia().getCantidadMaquinas()];
 		
 		for(int i = 0; i < Casino.getInstancia().getCantidadMaquinas(); i++) {
@@ -761,7 +761,7 @@ public class Ventana extends JFrame{
 			Boolean alcanzaRecaudacion = Casino.getInstancia().getMaquinaView(Integer.parseInt(maquinaElegida)).alcanzaRecaudacion();
 			
 			
-				if (opcionElegida == "Jugar" && !creditoIngresado.isEmpty()) {
+				if (soyCliente && !creditoIngresado.isEmpty()) {
 					float creditoIngresadoF = Float.valueOf(creditoIngresado);
 					
 					if (creditoIngresadoF < costeJugada) {
@@ -778,35 +778,36 @@ public class Ventana extends JFrame{
 						String ticket = Casino.getInstancia().generarTicket(creditoIngresadoF).toString();
 						JOptionPane.showMessageDialog(this,  ticket);
 						
+						
 						panelPrincipal.setVisible(false);
 						inicializarPanelMaquina();
 						panelMaquina.setVisible(true);
 					} 
 					
 					
-				} else if ( opcionElegida == "Jugar" && creditoIngresado.isEmpty() ) {
+				} else if (soyCliente && creditoIngresado.isEmpty() ) {
 					JOptionPane.showMessageDialog(this, " No ingresaste nada de credito. ");
 				}
-				if ( opcionElegida == "Dar Alta Premio") {
+				if ( !soyCliente && opcionElegida == "Dar Alta Premio") {
 					panelPrincipal.setVisible(false);
 					inicializarPanelAltaPremio();
 					panelAltaPremio.setVisible(true);
 
 				}
-				if ( opcionElegida == "Dar Baja Premio" ) {
+				if (  !soyCliente && opcionElegida == "Dar Baja Premio" ) {
 					panelPrincipal.setVisible(false);
 					inicializarPanelBajaPremio();
 					panelBajaPremio.setVisible(true);
 					
 				}
 				
-				if( opcionElegida == "Crear Maquina") {
+				if( !soyCliente && opcionElegida == "Crear Maquina") {
 					panelCrearMaquina.setVisible(true);
 					inicializarPanelCrearMaquina();
 					panelPrincipal.setVisible(false);
 				}
 				
-				if( opcionElegida == "Eliminar Maquina") {
+				if(  !soyCliente && opcionElegida == "Eliminar Maquina") {
 					panelEliminarMaquina.setVisible(true);
 					inicializarPanelEliminarMaquina();
 					panelPrincipal.setVisible(false);
